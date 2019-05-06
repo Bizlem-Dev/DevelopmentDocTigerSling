@@ -521,8 +521,8 @@ Session session =null;
 								
 							}
 							appobj.put("numberOfApprover", noofapp);
-							//bundleststic.getString("Jbpm_ip")
-								String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
+							//bundleststic.getString("Jbpm_ip")104.196.49.81
+								String urlstr = "http://"+bundleststic.getString("Jbpm_ip")+":8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
 								String wokusername = "kieserver";
 								String wokpassword = "kieserver1!";
 								String a = new ActivateWorkflow().callPostJSon(urlstr, appobj, wokusername, wokpassword);
