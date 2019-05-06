@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ResourceBundle;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
@@ -37,7 +39,9 @@ import com.service.impl.FreeTrialandCart;
 public class AddWFApproverServ  extends SlingAllMethodsServlet {
 	@Reference
 	private SlingRepository repo;
-
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
+	String jbpmip=bundleststic.getString("Jbpm_ip");
 	@Reference
 	private ParseSlingData parseSlingData;
 
@@ -122,7 +126,8 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 							no_approverNode.setProperty("ApproverName", approver);
 							//	out.println("approver: "+approver);
 							ActivateWorkflow ac=new ActivateWorkflow();
-							String urlstr1 = "http://35.188.243.203:8080/jbpm-users/user/add";
+						
+							String urlstr1 = "http://"+jbpmip+":8080/jbpm-users/user/add";
 							String wokusername1 = "kieserver";
 							String wokpassword1 = "kieserver1!";
 							JSONObject appobj1;
@@ -131,7 +136,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 
 							String add =ac.callPostJSon(urlstr1, appobj1, wokusername1, wokpassword1);
 							//	out.println("add: "+add);
-							String urlstr2 = "http://35.188.243.203:8080/jbpm-users/user/group/map";
+							String urlstr2 = "http://"+jbpmip+":8080/jbpm-users/user/group/map";
 							String wokusername2 = "kieserver";
 							String wokpassword2 = "kieserver1!";
 							JSONArray appobj2;
@@ -173,7 +178,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 							no_approverNode.setProperty("ApproverName", approver);
 							//	out.println("approver: "+approver);
 							ActivateWorkflow ac=new ActivateWorkflow();
-							String urlstr1 = "http://35.188.243.203:8080/jbpm-users/user/add";
+							String urlstr1 = "http://"+jbpmip+":8080/jbpm-users/user/add";
 							String wokusername1 = "kieserver";
 							String wokpassword1 = "kieserver1!";
 							JSONObject appobj1;
@@ -182,7 +187,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 
 							String add =ac.callPostJSon(urlstr1, appobj1, wokusername1, wokpassword1);
 							//out.println("add: "+add);
-							String urlstr2 = "http://35.188.243.203:8080/jbpm-users/user/group/map";
+							String urlstr2 = "http://"+jbpmip+":8080/jbpm-users/user/group/map";
 							String wokusername2 = "kieserver";
 							String wokpassword2 = "kieserver1!";
 							JSONArray appobj2;
@@ -235,7 +240,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 							approver= Approvres.getString(i);
 							no_approverNode.setProperty("ApproverName", approver);
 							ActivateWorkflow ac=new ActivateWorkflow();
-							String urlstr1 = "http://35.188.243.203:8080/jbpm-users/user/add";
+							String urlstr1 = "http://"+jbpmip+":8080/jbpm-users/user/add";
 							String wokusername1 = "kieserver";
 							String wokpassword1 = "kieserver1!";
 							JSONObject appobj1;
@@ -243,7 +248,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 
 							String add =ac.callPostJSon(urlstr1, appobj1, wokusername1, wokpassword1);
 
-							String urlstr2 = "http://35.188.243.203:8080/jbpm-users/user/group/map";
+							String urlstr2 = "http://"+jbpmip+":8080/jbpm-users/user/group/map";
 							String wokusername2 = "kieserver";
 							String wokpassword2 = "kieserver1!";
 							JSONArray appobj2;
@@ -278,7 +283,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 							approver= Approvres.getString(i);
 							no_approverNode.setProperty("ApproverName", approver);
 							ActivateWorkflow ac=new ActivateWorkflow();
-							String urlstr1 = "http://35.188.243.203:8080/jbpm-users/user/add";
+							String urlstr1 = "http://"+jbpmip+":8080/jbpm-users/user/add";
 							String wokusername1 = "kieserver";
 							String wokpassword1 = "kieserver1!";
 							JSONObject appobj1;
@@ -286,7 +291,7 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 
 							String add =ac.callPostJSon(urlstr1, appobj1, wokusername1, wokpassword1);
 
-							String urlstr2 = "http://35.188.243.203:8080/jbpm-users/user/group/map";
+							String urlstr2 = "http://"+jbpmip+":8080/jbpm-users/user/group/map";
 							String wokusername2 = "kieserver";
 							String wokpassword2 = "kieserver1!";
 							JSONArray appobj2;

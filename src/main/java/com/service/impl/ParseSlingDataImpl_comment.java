@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import org.apache.felix.scr.annotations.Component;
@@ -38,11 +40,13 @@ import com.service.ParseSlingData_comment;
 
 @Component(configurationFactory = true)
 // @Component(name="ParseSlingDataImpl",immediate = false, metatype = true)
-@Service(value = ParseSlingData.class)
+@Service(value = ParseSlingData_comment.class)
 @Properties({ @Property(name = "ParseSlingData", value = "parse") })
 // @Component @Service @Properties(@Property(name = "type",value="http"))
 public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 	@Reference
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 	private SlingRepository repo;
 
 	Session session = null;
@@ -526,11 +530,11 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 		Node QRcodeNode = null;
 		String temptoparse = "";
 		String newemail = email.replace("@", "_");
-		;
+		
 		try {
 
 			out = response.getWriter();
-			// out.print("session start :: "+session);
+			out.print("session start :: "+session);
 			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 			JSONObject sfobj = new JSONObject();
 
@@ -545,7 +549,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 					sfobj = getTempSFObj(email, templatename, response);
 					templatenode = (Node) sfobj.get("tempnode");
 					// out.println("sfobj * "+sfobj);
-					// out.println("templatenode * "+templatenode);
+					 out.println("templatenode * "+templatenode);
 
 				} else if (AttachtempalteType.equals("AdvancedTemplate")) {
 					if (Doctigernode.hasNode("AdvancedTemplate")
@@ -655,7 +659,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 								templatenode = (Node) sfobj.get("tempnode");
 								// out.println("sfobj **@@ "+sfobj);
 
-								// out.println("templatenode **@@ "+templatenode);
+								 out.println("templatenode **@@ "+templatenode);
 							}
 						}
 					}
@@ -676,7 +680,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 
 				JSONArray arr = SFData.getJSONArray("response");
 				JSONObject reqrecord = arr.getJSONObject(0);
-				// out.println(reqrecord);
+				 out.println(reqrecord);
 				JSONObject newjson = new JSONObject();
 				// out.println("ressfobj :: "+ressfobj);
 
@@ -745,7 +749,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 					QRobj.put("Position", QRcodeNode.getProperty("Position").getString());
 					QRobj.put("TableNo", QRcodeNode.getProperty("Table_No").getString());
 
-					// out.println("QRobj "+QRobj);
+					 out.println("QRobj "+QRobj);
 
 					Node param = QRcodeNode.getNode("Param");
 					NodeIterator QRitr = param.getNodes();
@@ -801,7 +805,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 
 				newjson.put("sfobj", sendsfobj);
 				// newjson.put("logo", "http://35.221.183.246:8082/logo.png");
-				newjson.put("Coverimageurl", "http://35.221.183.246:8082/centerimage.png");
+				newjson.put("Coverimageurl", "http://"+bundleststic.getString("Doctigerslingdvlp")+":8082/centerimage.png");
 				newjson.put("Coverimage_tableNo", "1");
 				// newjson.put("logo2", "");
 				JSONArray floorplanarr = new JSONArray();
@@ -814,10 +818,10 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 				}
 				newjson.put("floorplanarr", floorplanarr.toString());
 
-				// out.println("newjson2 " +newjson);
+				out.println("newjson2 " +newjson);
 
 				templatename_url = new SOAPCall().callPostJSonModified(
-						"http://35.188.233.86:8080/DocTigerSFCore/documentgenerationserv", newjson);
+						"http://"+bundleststic.getString("DocGenServerIP")+":8080/DocTigerSFCore/documentgenerationserv", newjson);
 				// out.println("templatename_urlc "+templatename_url);
 
 			}
@@ -1976,7 +1980,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 			// .getProperty("auctionService").getString();
 			// }
 			// http://35.221.160.146:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId=viki@gmail.com
-			url = "http://35.236.154.164:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId="
+			url = "http://"+bundleststic.getString("Sling_ip")+":8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId="
 					+ customerId;
 
 			// url="http://35.221.160.146:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId=viki@gmail.com";

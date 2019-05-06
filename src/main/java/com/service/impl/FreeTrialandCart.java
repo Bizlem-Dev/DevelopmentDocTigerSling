@@ -6,11 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 import org.apache.sling.commons.json.JSONObject;
 
 public class FreeTrialandCart {
-	
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
+
 	public static void main(String[] args) {
 		
 		new FreeTrialandCart().checkfreetrial("doctiger8@gmail.com");
@@ -19,7 +22,8 @@ public class FreeTrialandCart {
 	
 	public String checkfreetrial(String userid) {
 		int expireFlag=0;
-		String addr = "http://dev.bizlem.io:8086/apirest/trialmgmt/trialuser/"+userid+"/DocTigerFreeTrial";
+		String addr = "http://"+bundleststic.getString("Sling_ip")+":8086/apirest/trialmgmt/trialuser/"+userid+"/DocTigerFreeTrial";
+		//String addr = "http://dev.bizlem.io:8086/apirest/trialmgmt/trialuser/"+userid+"/DocTigerFreeTrial";
 		String username = "username";
 		String password = "password";
 		try{

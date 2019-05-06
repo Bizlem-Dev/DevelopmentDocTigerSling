@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -53,7 +54,8 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 
  @Reference
  private SlingRepository repo;
-
+ ResourceBundle bundle = ResourceBundle.getBundle("config");
+ static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
  @Reference
 	//private ParseSlingData parseSlingData;
  ParseSlingData parseSlingData= new ParseSlingDataImpl();
@@ -860,7 +862,7 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 		    }
 		    appobj.put("numberOfApprover", noofapp);
 
-		    String urlstr = "http://35.188.243.203:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
+		    String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
 		    String wokusername = "kieserver";
 		    String wokpassword = "kieserver1!";
 		    ActivateWorkflow ac = new ActivateWorkflow();

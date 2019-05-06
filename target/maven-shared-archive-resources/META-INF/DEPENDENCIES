@@ -64,6 +64,10 @@ From: 'ObjectWeb' (http://www.objectweb.org/)
   - ASM Core (http://asm.objectweb.org/asm/) asm:asm:jar:3.1
 
 
+From: 'Oracle Corporation' (http://www.oracle.com)
+  - MySQL Connector/J (http://dev.mysql.com/doc/connector-j/en/) mysql:mysql-connector-java:jar:5.1.12
+    License: The GNU General Public License, Version 2  (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
 From: 'Oracle Corporation' (http://www.oracle.com/)
   - jersey-client (https://jersey.java.net/jersey-client/) com.sun.jersey:jersey-client:jar:1.18.1
     License: CDDL 1.1  (http://glassfish.java.net/public/CDDL+GPL_1_1.html)    License: GPL2 w/ CPE  (http://glassfish.java.net/public/CDDL+GPL_1_1.html)

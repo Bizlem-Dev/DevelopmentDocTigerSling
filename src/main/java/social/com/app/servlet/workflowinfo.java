@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -49,6 +50,8 @@ public class workflowinfo extends SlingAllMethodsServlet {
 	
 	@Reference
 	private SlingRepository repo;
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 
 	@Reference
 	//private ParseSlingData parseSlingData;
@@ -92,7 +95,7 @@ public class workflowinfo extends SlingAllMethodsServlet {
 			wokpassword = inputobj.getString("password");
 			String password = "12345";
 
-			String urlstr = "http://35.188.243.203:8080/kie-server/services/rest/server/queries/tasks/instances/pot-owners?status=Ready&status=Reserved&status=InProgress&groups=&page=0&pageSize=10&sortOrder=true";
+			String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/queries/tasks/instances/pot-owners?status=Ready&status=Reserved&status=InProgress&groups=&page=0&pageSize=10&sortOrder=true";
 			String approverresult = new SOAPCall().callGetWithAuth(urlstr, wokusername, password);
 			approverresultobj = new JSONObject(approverresult);
 //			 out.println(approverresultobj);

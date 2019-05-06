@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import org.apache.felix.scr.annotations.Component;
@@ -35,7 +36,8 @@ public class GetRulenWorkflowServ extends SlingAllMethodsServlet {
 
 	@Reference
 	private SlingRepository repo;	
-
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 	@Override
 	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
 			throws ServletException, IOException {
@@ -76,8 +78,8 @@ public class GetRulenWorkflowServ extends SlingAllMethodsServlet {
 				
 			}else if (request.getRequestPathInfo().getExtension().equals("rules")) { 
 				StringBuffer response1 = null;
-				try {
-				URL obj = new URL("http://35.186.166.22:8082/portal/servlet/service/carrotrule.doctiger?username="+email);
+				try {//"+bundleststic.getString("CarrotRule_ip")+"
+				URL obj = new URL("http://"+bundleststic.getString("CarrotRule_ip")+":8082/portal/servlet/service/carrotrule.doctiger?username="+email);
 				
 				HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

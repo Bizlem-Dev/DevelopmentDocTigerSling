@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -47,7 +48,8 @@ import org.apache.sling.commons.json.JSONObject;
 public class SaveTemplateServ extends SlingAllMethodsServlet {
 	@Reference
 	private SlingRepository repo;	
-	
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 	@Reference
 	//private ParseSlingData parseSlingData;
 	ParseSlingData parseSlingData= new ParseSlingDataImpl();
@@ -57,7 +59,7 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		out.println("Test");
-	   out.println(request.getRemoteUser());
+	   out.println("+bundleststic.getString(\"Sling_ip\")= "+bundleststic.getString("Sling_ip"));
 	}
 	
 	@Override
@@ -553,7 +555,7 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 					String savepath= "/usr/local/tomcat8/apache-tomcat-8.5.35/webapps/ROOT/TemplateLibraryAdvanced/";
 					Template.setProperty("fileServerPath", savepath + template);
 					//Template.setProperty("filepathWorkflow", "http://35.221.183.246:8082/TemplateLibraryAdvanced/" + template + "." + ext);
-					Template.setProperty("filepathWorkflow", "http://35.236.154.164:8082/TemplateLibraryAdvanced/" + template + "." + ext);
+					Template.setProperty("filepathWorkflow", "http://"+bundleststic.getString("Sling_ip")+":8082/TemplateLibraryAdvanced/" + template + "." + ext);
 					
 					//File dir = new File("/home/ubuntu/apache-tomcat-8.5.31/webapps/ROOT/TemplateLibraryAdvanced");
 					File dir= new File("/usr/local/tomcat8/apache-tomcat-8.5.35/webapps/ROOT/TemplateLibraryAdvanced");
@@ -664,8 +666,8 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 									
 								}
 								appobj.put("numberOfApprover", noofapp);
-						
-									String urlstr = "http://35.188.243.203:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
+								
+									String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
 									String wokusername = "kieserver";
 									String wokpassword = "kieserver1!";
 									 ActivateWorkflow ac=new ActivateWorkflow();

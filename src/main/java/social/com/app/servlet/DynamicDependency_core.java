@@ -38,13 +38,18 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 
 	@Reference
 	private SlingRepository repo;
-
+//http://35.200.169.114:8082/portal/servlet/service/dDependency_core
 	@Reference
 	//private ParseSlingData parseSlingData;
 	ParseSlingData parseSlingData= new ParseSlingDataImpl();
 
 	Session session = null; 
-
+	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out = response.getWriter();
+		out.println("in DD");
+	}
 	@Override
 	protected void doPost(SlingHttpServletRequest req, SlingHttpServletResponse rep) throws ServletException, IOException {
 		PrintWriter out = rep.getWriter();

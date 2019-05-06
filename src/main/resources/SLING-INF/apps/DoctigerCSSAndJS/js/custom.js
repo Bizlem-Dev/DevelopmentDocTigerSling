@@ -6,7 +6,7 @@ if(document.getElementById("email").value=="anonymous"){
 	var Email= document.getElementById("email").value;
 }
 var SFEmail= document.getElementById("email").value;
-var ip="http://35.236.154.164";
+var ip="http://35.200.169.114";
 var port="8082";
 
 console.log(Email);
@@ -1645,7 +1645,8 @@ $('.mail-template-sfdc-save-next').click(function(){
 			if($('#check-external-parameter-temp').is(':checked')){
 				$('.external-parameter-main-template').css('display','block');
 				$('.compose-clause-main-template').css('display','none');
-			}else{
+			}
+//			else{
 				xret=myFunction();
 				//alert(x);
 				console.log(JSON.parse(xret));
@@ -1666,7 +1667,7 @@ $('.mail-template-sfdc-save-next').click(function(){
 				}
 				$('.compose-clause-main-template').css('display','block');
 				$('.external-parameter-main-template').css('display','none');				
-			}
+//			}
 			/*{"templatename":"temp1","email":"doctiger@xyz.com","username":"user@gmail.com","saveType":"new",
 			"SFobject":{"Account":["accname","Accno"],"contact":["contactname","contactno"]},"Primerykey":{"object":"Account","key":"Accno"}}*/
 });
@@ -4596,13 +4597,15 @@ $('#req-res-DocGen-event2-save').click(function () {
 	console.log("jsonDataDD  "+JSON.stringify(jsonDataDD));
 	$.ajax({
 		type: 'POST',
-		url: '/portal/servlet/service/dDependency_core_comment',
+		url: '/portal/servlet/service/dDependency_core',
+//		url: '/portal/servlet/service/dDependency_core_comment',
 		async:false,
 		data:JSON.stringify(jsonDataDD),
 		contentType: 'application/json',
 		dataType: 'text',
 		success: function (dataa) {
-			console.log("************************* DD   "+JSON.stringify(dataa));
+			console.log("************************* Data   "+dataa);
+//			console.log("************************* DD   "+JSON.stringify(dataa));
 			var atag='<a href="'+dataa+'">click here to view file</a>';
 			document.getElementById("genDocLink").innerHTML=atag;
 		}

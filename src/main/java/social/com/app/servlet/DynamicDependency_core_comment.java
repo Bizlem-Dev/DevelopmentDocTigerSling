@@ -21,14 +21,16 @@ import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.jcr.api.SlingRepository;
 
 import com.service.ParseSlingData;
+import com.service.ParseSlingData_comment;
 import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
+import com.service.impl.ParseSlingDataImpl_comment;
 
 @Component(immediate = true, metatype = false)
 @Service(value = javax.servlet.Servlet.class)
 @Properties({ @Property(name = "service.description", value = "Save product Servlet"),
 	@Property(name = "service.vendor", value = "VISL Company"),
-	@Property(name = "sling.servlet.paths", value = { "/servlet/service/dDependency_core_comment" }),
+	@Property(name = "sling.servlet.paths", value = { "/servlet/service/dDependency_core_comment12" }),
 	@Property(name = "sling.servlet.resourceTypes", value = "sling/servlet/default"),
 	@Property(name = "sling.servlet.extensions", value = { "hotproducts", "cat", "latestproducts", "brief",
 			"prodlist", "catalog", "viewcart", "productslist", "addcart", "createproduct", "checkmodelno",
@@ -41,9 +43,16 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 
 	@Reference
 	//private ParseSlingData parseSlingData;
-	ParseSlingData parseSlingData= new ParseSlingDataImpl();
+	ParseSlingData_comment parseSlingData= new ParseSlingDataImpl_comment();
 
 	Session session = null; 
+	@Override
+	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out = response.getWriter();
+		out.println("in DD");
+	}
 
 	@Override
 	protected void doPost(SlingHttpServletRequest req, SlingHttpServletResponse rep) throws ServletException, IOException {
@@ -64,7 +73,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 			}
 			// StandardCharsets.UTF_8.name() > JDK 7
 			String res = buf.toString("UTF-8");
-			//out.println("res: " + res);
+			out.println("res: " + res);
 			JSONObject resultobj = new JSONObject(res);
 			String email = resultobj.getString("Email");
 			String EventId = resultobj.getString("EventId");
@@ -73,7 +82,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 			String Primery_key = resultobj.getString("Primery_key");
 			String Primery_key_value = resultobj.getString("Primery_key_value");
 			JSONObject SFData= resultobj.getJSONObject("SFData");
-
+			
 			//out.println("SFData  "+SFData);
 			//				if(EventName.equals("SPA Event")) {
 			//					out.print("http://35.188.233.86:8080/Template1_21-Sep-2018_08-23-35-818.pdf,http://35.188.233.86:8080/LTL_Fixed_Return_annex_Finalized_14_Aug_2018_24-Oct-2018_15-16-46-128.pdf,"
@@ -98,7 +107,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 
 			//out.println("before eventdata");
 			String result = parseSlingData.getEventdata(email, EventId, EventName, rep);
-			//out.println("event result " + result);
+			out.println("event result " + result);
 			JSONArray arr = new JSONArray(result);
 			JSONObject CTrecord = null;
 
@@ -108,9 +117,10 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 				String docurl="";
 				if(CTrecord.has("AttachedTempType")) {
 					String Templatename = CTrecord.getString("AttachedTempName");
-					//out.println(Templatename);
+					out.println(Templatename);
 					// call method to get template info
 					String AttachtempalteType = CTrecord.getString("AttachedTempType");
+					out.println(AttachtempalteType);
 
 					docurl = parseSlingData.getADVandTemplatedata(email, Templatename, AttachtempalteType, SFObject,
 							Primery_key, Primery_key_value,SFData, rep);

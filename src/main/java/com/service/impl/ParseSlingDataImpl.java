@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import org.apache.felix.scr.annotations.Component;
@@ -43,7 +45,8 @@ import com.service.ParseSlingData;
 public class ParseSlingDataImpl implements ParseSlingData {
 	@Reference
 	private SlingRepository repo;
-
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 	Session session = null;
 
 	public Node getCarrotruleNode(String freetrialstatus, String email, Session session1,
@@ -51,7 +54,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 		PrintWriter out = null;
 		out.println("in CarrotRuleFreeTrial");
-
+		
 		Node contentNode = null;
 		Node appserviceNode = null;
 		Node appfreetrialNode = null;
@@ -525,7 +528,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		Node QRcodeNode = null;
 		String temptoparse = "";
 		String newemail = email.replace("@", "_");
-		;
+		
 		try {
 
 			out = response.getWriter();
@@ -543,8 +546,8 @@ public class ParseSlingDataImpl implements ParseSlingData {
 					temptoparse = templatename;
 					sfobj = getTempSFObj(email, templatename, response);
 					templatenode = (Node) sfobj.get("tempnode");
-					 out.println("sfobj * "+sfobj);
-					 out.println("templatenode * "+templatenode);
+//					 out.println("sfobj * "+sfobj);
+//					 out.println("templatenode * "+templatenode);
 
 				} else if (AttachtempalteType.equals("AdvancedTemplate")) {
 					if (Doctigernode.hasNode("AdvancedTemplate")
@@ -654,7 +657,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 								templatenode = (Node) sfobj.get("tempnode");
 								// out.println("sfobj **@@ "+sfobj);
 
-								 out.println("templatenode **@@ "+templatenode);
+//								 out.println("templatenode **@@ "+templatenode);
 							}
 						}
 					}
@@ -744,7 +747,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 					QRobj.put("Position", QRcodeNode.getProperty("Position").getString());
 					QRobj.put("TableNo", QRcodeNode.getProperty("Table_No").getString());
 
-					 out.println("QRobj "+QRobj);
+//					 out.println("QRobj "+QRobj);
 
 					Node param = QRcodeNode.getNode("Param");
 					NodeIterator QRitr = param.getNodes();
@@ -800,7 +803,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 				newjson.put("sfobj", sendsfobj);
 				// newjson.put("logo", "http://35.221.183.246:8082/logo.png");
-				newjson.put("Coverimageurl", "http://35.221.183.246:8082/centerimage.png");
+				newjson.put("Coverimageurl", "http://"+bundleststic.getString("Doctigerslingdvlp")+":8082/centerimage.png");
 				newjson.put("Coverimage_tableNo", "1");
 				// newjson.put("logo2", "");
 				JSONArray floorplanarr = new JSONArray();
@@ -813,11 +816,11 @@ public class ParseSlingDataImpl implements ParseSlingData {
 				}
 				newjson.put("floorplanarr", floorplanarr.toString());
 
-				out.println("newjson2 " +newjson);
+//				out.println("newjson2 " +newjson);
 
 				templatename_url = new SOAPCall().callPostJSonModified(
-						"http://35.188.233.86:8080/DocTigerSFCore/documentgenerationserv", newjson);
-				 out.println("templatename_urlc "+templatename_url);
+						"http://"+bundleststic.getString("DocGenServerIP")+":8080/DocTigerSFCore/documentgenerationserv", newjson);
+//				 out.println("templatename_urlc "+templatename_url);
 
 			}
 		} catch (Exception e) {
@@ -1975,7 +1978,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			// .getProperty("auctionService").getString();
 			// }
 			// http://35.221.160.146:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId=viki@gmail.com
-			url = "http://35.236.154.164:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId="
+			url = "http://"+bundleststic.getString("Sling_ip")+":8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId="
 					+ customerId;
 
 			// url="http://35.221.160.146:8082/AuctionServices/services/Auctions_WSDL/getCustomerServiceStatus?customerId=viki@gmail.com";
