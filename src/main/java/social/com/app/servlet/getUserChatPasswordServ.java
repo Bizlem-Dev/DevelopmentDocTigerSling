@@ -85,7 +85,7 @@ public class getUserChatPasswordServ extends SlingAllMethodsServlet {
 		 e.printStackTrace();
 		 //password="fail"+e.getMessage();
 		 }
-		 out.println("new ");
+		 out.println("new 123");
 		 out.println(password+"-@#@-"+entityId);
   
  }
