@@ -30,37 +30,34 @@ import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
 import com.service.impl.ParseSlingDataImpl_comment;
 
-//@SlingServlet(paths = "/servlet/service/dDependency_core_comment")
+import com.service.SOAPCall;
+
 @Component(immediate = true, metatype = false)
 @Service(value = javax.servlet.Servlet.class)
 @Properties({ @Property(name = "service.description", value = "Save product Servlet"),
-		@Property(name = "service.vendor", value = "VISL Company"),
-		@Property(name = "sling.servlet.paths", value = { "/servlet/service/dDependency_core_comment123" }),
-		@Property(name = "sling.servlet.resourceTypes", value = "sling/servlet/default"),
-		@Property(name = "sling.servlet.extensions", value = { "hotproducts", "cat", "latestproducts", "brief",
-				"prodlist", "catalog", "viewcart", "productslist", "addcart", "createproduct", "checkmodelno",
-				"productEdit" }) })
+	@Property(name = "service.vendor", value = "VISL Company"),
+	@Property(name = "sling.servlet.paths", value = { "/servlet/service/dDependency_core_comment" }),
+	@Property(name = "sling.servlet.resourceTypes", value = "sling/servlet/default"),
+	@Property(name = "sling.servlet.extensions", value = { "hotproducts", "cat", "latestproducts", "brief",
+			"prodlist", "catalog", "viewcart", "productslist", "addcart", "createproduct", "checkmodelno",
+	"productEdit" }) })
 @SuppressWarnings("serial")
-public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
+public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 
 	@Reference
 	private SlingRepository repo;
+	Session session = null;
 	ResourceBundle bundle = ResourceBundle.getBundle("config");
 	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
-	@Reference
-	// private ParseSlingData parseSlingData;
-	ParseSlingData_comment parseSlingData = new ParseSlingDataImpl_comment();
-
-	Session session = null;
-
+//	ParseSlingData_comment parseSlingData = new ParseSlingDataImpl_comment();
+	ParseSlingData parseSlingData= new ParseSlingDataImpl();
 	@Override
 	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		out.println("in DD123");
+		out.println("Test1111");
+		
 	}
-
 	@Override
 	protected void doPost(SlingHttpServletRequest req, SlingHttpServletResponse rep)
 			throws ServletException, IOException {
@@ -83,7 +80,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 			String res = buf.toString("UTF-8");
 			out.println("res: " + res);
 			JSONObject resultobj = new JSONObject(res);
-			String email = resultobj.getString("Email");
+			String email = resultobj.getString("Email").replace("@", "_");
 			String EventId = resultobj.getString("EventId");
 			String EventName = resultobj.getString("EventName");
 			String SFObject = resultobj.getString("SFObject");
@@ -120,12 +117,12 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 
 			// ==============================================================================================================================
 
-			// out.println("before eventdata");
-			String result = parseSlingData.getEventdata(email, EventId, EventName, rep,session);
-			out.println("event result ::" + result);
+			 out.println("before eventdata"+email+EventId+EventName+rep);
+			String result = parseSlingData.getEventdata(email, EventId, EventName, rep);//,session
+			out.println("event result1 ::" + result);
 			JSONArray arr = new JSONArray(result);
 			JSONObject CTrecord = null;
-			out.println("arr.length()=" + arr.length());
+//			out.println("arr.length()=" + arr.length());
 			for (int ii = 0; ii < arr.length(); ii++) {
 				CTrecord = arr.getJSONObject(ii);
 				out.println(CTrecord);
@@ -138,7 +135,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 					out.println(AttachtempalteType);
 
 					docurl = parseSlingData.getADVandTemplatedata(email, Templatename, AttachtempalteType, SFObject,
-							Primery_key, Primery_key_value, SFData, rep,session);
+							Primery_key, Primery_key_value, SFData, rep);//,session
 					// String docurl="";
 					out.println(docurl);
 				}
@@ -149,7 +146,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 					// out.println("MailTemplate " + MailTemplate);
 
 					JSONObject maildata = parseSlingData.getMailTemplatedata(email, MailTemplate, SFObject, Primery_key,
-							Primery_key_value, SFData, rep,session);
+							Primery_key_value, SFData, rep); //,session
 					out.println("SFData= " + SFData);
 					out.println("maildata " + maildata);
 					// status= new Report().sendMail(maildata, docurl,"", rep);
@@ -204,4 +201,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 			out.println(e.getMessage());
 		}
 	}
+		
+		
+	
 }

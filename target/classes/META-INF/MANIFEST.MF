@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1557127871001
+Bnd-LastModified: 1557294469745
 Build-Jdk: 1.8.0_181
 Built-By: user
 Bundle-Category: sling
@@ -16,16 +16,15 @@ Embed-Dependency: jackrabbit-jcr-commons;inline="org/apache/jackrabbit/u
  til/ISO9075.*|org/apache/jackrabbit/util/ISO8601.*|org/apache/jackrabbi
  t/util/XMLChar.*",org.apache.sling.commons.osgi;inline="org/apache/slin
  g/commons/osgi/OsgiUtil.*"
-Import-Package: com.mongodb.connection;version="[3.4,4)",com.sun.jersey.
- core.util,javax.activation,javax.jcr;version="[2.0,3)",javax.jcr.query;
- version="[2.0,3)",javax.mail,javax.mail.internet,javax.servlet,javax.se
- rvlet.http,javax.xml.parsers,org.apache.poi.hssf.usermodel,org.apache.p
- oi.ss.usermodel,org.apache.sling.api;version="[2.1,3)",org.apache.sling
- .api.request;version="[2.1,3)",org.apache.sling.api.servlets;version="[
- 2.1,3)",org.apache.sling.commons.json;version="[2.0,3)",org.apache.slin
- g.jcr.api;version="[2.1,3)",org.jsoup;version="[1.6,2)",org.jsoup.nodes
- ;version="[1.6,2)",org.osgi.framework;version="[1.4,2)",org.osgi.servic
- e.event;version="[1.1,2)",org.w3c.dom
+Import-Package: com.sun.jersey.core.util,javax.activation,javax.jcr;vers
+ ion="[2.0,3)",javax.jcr.query;version="[2.0,3)",javax.mail,javax.mail.i
+ nternet,javax.servlet,javax.servlet.http,javax.xml.parsers,org.apache.p
+ oi.hssf.usermodel,org.apache.poi.ss.usermodel,org.apache.sling.api;vers
+ ion="[2.1,3)",org.apache.sling.api.request;version="[2.1,3)",org.apache
+ .sling.api.servlets;version="[2.1,3)",org.apache.sling.commons.json;ver
+ sion="[2.0,3)",org.apache.sling.jcr.api;version="[2.1,3)",org.jsoup;ver
+ sion="[1.6,2)",org.jsoup.nodes;version="[1.6,2)",org.osgi.framework;ver
+ sion="[1.4,2)",org.osgi.service.event;version="[1.1,2)",org.w3c.dom
 Service-Component: OSGI-INF/serviceComponents.xml
 Sling-Initial-Content: SLING-INF/
 Tool: Bnd-1.50.0

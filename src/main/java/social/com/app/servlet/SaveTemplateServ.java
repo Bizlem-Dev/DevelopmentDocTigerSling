@@ -667,7 +667,7 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 								}
 								appobj.put("numberOfApprover", noofapp);
 								
-									String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
+									String urlstr = "http://"+bundleststic.getString("Jbpm_ip")+":8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
 									String wokusername = "kieserver";
 									String wokpassword = "kieserver1!";
 									 ActivateWorkflow ac=new ActivateWorkflow();

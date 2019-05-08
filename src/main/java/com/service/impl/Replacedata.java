@@ -68,7 +68,7 @@ String body= "";
 				resp.put("attachurl", attachurl);
 
 			}
-			
+			//$$name$$
 	to = to.replace("$$", " $$ ").trim();		
  body= body.replace("$$", " $$ ");
  
@@ -137,7 +137,7 @@ String body= "";
 
 						}
 					}
-                    body =   Jsoup.parse( body).text();
+//                    body =   Jsoup.parse( body).text();
 
             		
                     

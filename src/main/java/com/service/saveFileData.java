@@ -13,8 +13,9 @@ public class saveFileData {
 	public String convertFile(String file_string, String file_name, String savepath) {
 		try {
         byte[] bytes = Base64.decode(file_string);
-        File file = new File(savepath+""+file_name);
+        File file = new File(savepath+file_name);
         FileOutputStream fop = new FileOutputStream(file);
+        
         fop.write(bytes);
         fop.flush();
         fop.close();

@@ -29,6 +29,20 @@ public class SOAPCall {
 //		//String a="TemplateName=Template1&filename=Template1.docx&jsonstring={\"sdvsv\":\"vsdsv\"}";
 //		JSONObject obj = new JSONObject();
 		try {
+			
+			JSONObject sendobj = new JSONObject();
+			sendobj.put("to", "tejal.jabade@bizlem.com");
+			sendobj.put("fromId", "doctigertest@gmail.com");
+			sendobj.put("fromPass", "doctiger@123");
+			sendobj.put("subject", "subject");
+			String bd="<p>Dear $$Name$$</p>\r\n<p>This is test mail. \r\n </p><p>Thanks,</p><p> </p>";
+			sendobj.put("body", bd);
+		
+		
+			System.out.println("sendobj  " + sendobj);
+			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj);
+			System.out.println("mail Status "+st);
+		
 //			obj.put("noOfProperties", "2");
 //		
 //		obj.put("project_name", "Doctiger");

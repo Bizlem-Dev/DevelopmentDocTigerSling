@@ -38,7 +38,8 @@ public class QRCodenLogo extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 		out.println("Test");
 try {
-	RequestDispatcher dis= request.getRequestDispatcher("/content/DoctigerCSSAndJS/static/.qrCode");
+//	RequestDispatcher dis= request.getRequestDispatcher("/content/DoctigerCSSAndJS/static/.qrCode");
+	RequestDispatcher dis= request.getRequestDispatcher("/content/static/.qrCode");
 	   dis.forward(request, response);
 	
 }catch (Exception e) {

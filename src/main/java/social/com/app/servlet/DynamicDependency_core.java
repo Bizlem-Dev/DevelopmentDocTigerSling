@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ResourceBundle;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
@@ -21,6 +23,7 @@ import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.jcr.api.SlingRepository;
 
 import com.service.ParseSlingData;
+import com.service.SOAPCall;
 import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
 
@@ -38,6 +41,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 
 	@Reference
 	private SlingRepository repo;
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 //http://35.200.169.114:8082/portal/servlet/service/dDependency_core
 	@Reference
 	//private ParseSlingData parseSlingData;
@@ -122,6 +127,57 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					// String docurl="";
 					out.println(docurl);
 				}
+				
+//				out.println("mail process");
+				if (CTrecord.has("CT") && CTrecord.getString("CT").contains("Mail")) {
+					String MailTemplate = CTrecord.getString("MailTempName");
+					// call method to get template info
+					// out.println("MailTemplate " + MailTemplate);
+
+					JSONObject maildata = parseSlingData.getMailTemplatedata(email, MailTemplate, SFObject, Primery_key,
+							Primery_key_value, SFData, rep); //,session
+//					out.println("SFData= " + SFData);
+					JSONArray resar=SFData.getJSONArray("response");
+					String toemail="";
+					try {
+					for(int k=0;k<resar.length();k++) {
+						JSONObject jsobj=resar.getJSONObject(k);
+						if(jsobj.has("Email")) {
+							toemail=jsobj.getString("Email");
+//							out.println("toemail= " + toemail);
+						}
+					}
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
+//					out.println("maildata " + maildata);
+					// status= new Report().sendMail(maildata, docurl,"", rep);
+					JSONObject sendobj = new JSONObject();
+//					sendobj.put("to", maildata.get("to"));
+					sendobj.put("to",toemail);
+					sendobj.put("fromId", "doctigertest@gmail.com");
+					sendobj.put("fromPass", "doctiger@123");
+					sendobj.put("subject", maildata.get("subject"));
+//					out.println("newbody old= "+maildata.get("body").toString());
+//					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
+//					out.println("newbody = "+newbody);
+					
+					sendobj.put("body",maildata.get("body").toString());
+					if (maildata.has("attachurl")) {
+						sendobj.put("attachFilePath", maildata.get("attachurl"));
+					}
+//					out.println("sendobj  " + sendobj);
+					// out.println("Mailsendobj "+sendobj);
+					String sendMailUrl = "http://" + bundleststic.getString("DocGenServerIP")
+							+ ":8080/NewMail/getFileAttachServlet";
+
+//				    					status = 
+					int st = new SOAPCall().callPostJSonModified(sendMailUrl, sendobj);
+//					out.println("mail Status " + st);
+				}
+				
+				
+				
 				//out.println("mail process");
 				//    					if(CTrecord.has("CT") && CTrecord.getString("CT").contains("Mail")) {
 				//    					String MailTemplate = CTrecord.getString("MailTempName");

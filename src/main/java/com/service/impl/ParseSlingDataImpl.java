@@ -35,6 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.mongodb.diagnostics.logging.Logger;
 import com.service.ParseSlingData;
 
 @Component(configurationFactory = true)
@@ -820,7 +821,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 				templatename_url = new SOAPCall().callPostJSonModified(
 						"http://"+bundleststic.getString("DocGenServerIP")+":8080/DocTigerSFCore/documentgenerationserv", newjson);
-//				 out.println("templatename_urlc "+templatename_url);
+				 out.println("templatename_urlc "+templatename_url);
 
 			}
 		} catch (Exception e) {
@@ -844,7 +845,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		Node Doctigernode = null;
 		Node EventIdnode = null;
 		String newemail = email.replace("@", "_");
-		;
+		
 		try {
 
 			out = response.getWriter();

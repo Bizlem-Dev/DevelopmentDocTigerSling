@@ -35,7 +35,8 @@ public class PendingApproval extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 		out.println("Test");
 try {
-	RequestDispatcher dis= request.getRequestDispatcher("/content/DoctigerCSSAndJS/static/.Showtask");
+//	RequestDispatcher dis= request.getRequestDispatcher("/content/DoctigerCSSAndJS/static/.Showtask");
+	RequestDispatcher dis= request.getRequestDispatcher("/content/static/.Showtask");
 	   dis.forward(request, response);
 	
 }catch (Exception e) {

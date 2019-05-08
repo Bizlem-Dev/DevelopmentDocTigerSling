@@ -4604,7 +4604,7 @@ $('#req-res-DocGen-event2-save').click(function () {
 		contentType: 'application/json',
 		dataType: 'text',
 		success: function (dataa) {
-			console.log("************************* Data   "+dataa);
+			console.log("************************* Data12   "+dataa);
 //			console.log("************************* DD   "+JSON.stringify(dataa));
 			var atag='<a href="'+dataa+'">click here to view file</a>';
 			document.getElementById("genDocLink").innerHTML=atag;
@@ -4980,7 +4980,7 @@ function addeventcomm(selectclass){
 var qr_tempName1;																			
 $('.btn-QRcode').click(function(){
 	console.log("In function");
-	var popup= window.open("http://35.236.154.164:8082/portal/servlet/service/QRCodenLogo");
+	var popup= window.open("http://35.200.169.114:8082/portal/servlet/service/QRCodenLogo");
 	popup.onload = function() {
         console.log("test");
     	qr_tempName1= document.getElementById("tempName").value;

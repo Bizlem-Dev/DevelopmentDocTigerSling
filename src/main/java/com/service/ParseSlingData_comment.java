@@ -10,11 +10,11 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.commons.json.JSONObject;
 
 public interface  ParseSlingData_comment   {
-	public String getEventdata(String email, String eventid, String eventname, SlingHttpServletResponse response); 
+	public String getEventdata(String email, String eventid, String eventname, SlingHttpServletResponse response,Session session); 
 	public JSONObject getTempSFObj(String email, String tempname, SlingHttpServletResponse response ) ;
 
-	public String getADVandTemplatedata(String email,  String templatename, String AttachtempalteType,String SFObject, String Primery_key, String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response);
-	public JSONObject getMailTemplatedata(String email,  String mailtemplatename, String SFObject, String Primery_key, String Primery_key_value,JSONObject SFData, SlingHttpServletResponse response);
+	public String getADVandTemplatedata(String email,  String templatename, String AttachtempalteType,String SFObject, String Primery_key, String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response,Session session);
+	public JSONObject getMailTemplatedata(String email,  String mailtemplatename, String SFObject, String Primery_key, String Primery_key_value,JSONObject SFData, SlingHttpServletResponse response,Session session);
 	public String getFileReplaceData(String email, String clauseid, String clausename,SlingHttpServletResponse response, String SFresp );
 	public String getClauseByName(String searchText, String email, Node DoctigerAdvnode, SlingHttpServletResponse response ) ;
 	public String addmergefiled(Node clsdesc, String SFresp, SlingHttpServletResponse response ) ;

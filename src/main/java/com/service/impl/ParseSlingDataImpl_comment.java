@@ -361,7 +361,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 		return DoctigerAdvNode;
 	}
 
-	public String getEventdata(String email, String eventId, String eventName, SlingHttpServletResponse response) {
+	public String getEventdata(String email, String eventId, String eventName, SlingHttpServletResponse response,Session session1) {
 		PrintWriter out = null;
 		// Node emailnode=null;
 		// Node Eventnode=null;
@@ -390,7 +390,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 			// out.println("in getEventdata ");
 
 			// out.print("session start :: "+session);
-			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+//			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 			// out.print("session :: "+session);
 			// out.print(session.getRootNode().getNode("content"));
 			// out.print(session.getRootNode().getNode("content").hasNode("user"));
@@ -400,7 +400,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(usrid);
 			// out.println("freetrialstatus: "+freetrialstatus);
-			dtaNode = getDocTigerAdvNode(freetrialstatus, usrid, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, usrid, session1, response);
 			// out.println("dtaNode: "+dtaNode);
 			if (dtaNode != null) {
 				if (dtaNode.hasNode("Communication")) {
@@ -519,7 +519,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 	}
 
 	public String getADVandTemplatedata(String email, String templatename, String AttachtempalteType, String SFObject,
-			String Primery_key, String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response) {
+			String Primery_key, String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response,Session session1) {
 		PrintWriter out = null;
 		String templatename_url = null;
 		Node templatenode = null;
@@ -534,14 +534,14 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 		try {
 
 			out = response.getWriter();
-			out.print("session start :: "+session);
-			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+//			out.print("session start :: "+session);
+//			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 			JSONObject sfobj = new JSONObject();
 
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			Doctigernode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			Doctigernode = getDocTigerAdvNode(freetrialstatus, email, session1, response);
 			if (Doctigernode != null) {
 
 				if (AttachtempalteType.equals("TemplateLibrary")) {
@@ -835,7 +835,7 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 	}
 
 	public JSONObject getMailTemplatedata(String email, String mailtemplatename, String SFObject, String Primery_key,
-			String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response) {
+			String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response,Session session1) {
 		PrintWriter out = null;
 		JSONObject mailbody = null;
 		Node dtaNode = null;
@@ -851,13 +851,13 @@ public class ParseSlingDataImpl_comment implements ParseSlingData_comment {
 
 			out = response.getWriter();
 			// out.print("session start :: "+session);
-			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+//			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 			JSONObject sfobj = new JSONObject();
 
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			dtaNode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, email, session1, response);
 			if (dtaNode != null) {
 
 				if (dtaNode.hasNode("Communication") && dtaNode.getNode("Communication").hasNode("MailTemplate")
