@@ -1859,27 +1859,53 @@ if($('#checkAdvancedComposeTempLib').is(":checked")){
 }else{
 	advanced="false";
 }
-console.log(advanced);
-var advancedobject={};
-var selectedrule=document.getElementById("RuleEngine").value;
-var selectedworkflow=document.getElementById("wf_sel").value;
-var selecteddocumentworkflow=document.getElementById("wfdoc_sel").value;
-var filename=document.getElementById("upfile").value;
-var filedata=document.getElementById("base64docx").value;
-uploadtemplate["filename"]=filename;
-uploadtemplate["filedata"]=filedata;
-advancedobject["selectedrule"]=selectedrule;
-advancedobject["selectedworkflow"]=selectedworkflow;
-advancedobject["selecteddocumentworkflow"]=selecteddocumentworkflow;
-composeTempJson["templatename"]=templatename;
-composeTempJson["email"]=Email;
-composeTempJson["username"]=username;
-composeTempJson["NumStyle"]=NumStyle;
-composeTempJson["selectedclause"]=selectedclause;
-composeTempJson["uploadtemplate"]=uploadtemplate;
-composeTempJson["advanced"]=advanced;
-composeTempJson["advancedobject"]=advancedobject;
-//alert(JSON.stringify(composeTempJson));
+
+
+
+//if(document.getElementById("file-upload").value !="")
+//{
+var reader = new FileReader();
+
+var fname = document.getElementById("file-upload").value;
+// console.log("filename-- " + fname);
+var f = document.getElementById("file-upload").files;
+reader.readAsDataURL(f[0]);
+
+reader.onloadend = function() {
+	console.log(advanced);
+	var advancedobject={};
+	var selectedrule=document.getElementById("RuleEngine").value;
+	var selectedworkflow=document.getElementById("wf_sel").value;
+	var selecteddocumentworkflow=document.getElementById("wfdoc_sel").value;
+	var filename=document.getElementById("upfile").value;
+	//var filedata=document.getElementById("base64docx").value;
+	uploadtemplate["filename"]=filename;
+	//uploadtemplate["filedata"]=filedata;
+	advancedobject["selectedrule"]=selectedrule;
+	advancedobject["selectedworkflow"]=selectedworkflow;
+	advancedobject["selecteddocumentworkflow"]=selecteddocumentworkflow;
+	composeTempJson["templatename"]=templatename;
+	composeTempJson["email"]=Email;
+	composeTempJson["username"]=username;
+	composeTempJson["NumStyle"]=NumStyle;
+	composeTempJson["selectedclause"]=selectedclause;
+	composeTempJson["uploadtemplate"]=uploadtemplate;
+	composeTempJson["advanced"]=advanced;
+	composeTempJson["advancedobject"]=advancedobject;
+	//alert(JSON.stringify(composeTempJson));
+	var filedata = reader.result;
+
+	var fd = filedata.substr(0, filedata.indexOf(",") + 1);
+	var fdata = filedata.replace(fd, "");
+//	 console.log("filedata-- " + fdata);
+	uploadtemplate["filedata"]=fdata;
+	
+	// console.log("json file- " + JSON.stringify(filejs));
+
+	// new
+
+	
+
 console.log(JSON.stringify(composeTempJson));
 $.ajax({
 	type:'POST',
@@ -1905,6 +1931,7 @@ $.ajax({
 		//window.location.reload();
 	}
 });
+}
 });
 
 var mailtempsf={};

@@ -1,10 +1,13 @@
 package social.com.app.servlet;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import com.sun.jersey.core.util.Base64;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -544,13 +547,58 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 					// !uploadtempobj.getString("filename").trim().isEmpty()) && (
 					// uploadtempobj.has("filedata") || !uploadtempobj.isNull("filedata") ||
 					// !uploadtempobj.getString("filedata").trim().isEmpty())) {
-
 					String filedata = uploadtempobj.getString("filedata");
 					String filename = uploadtempobj.getString("filename");
-					Template.setProperty("filename", filename);
 					int e = filename.indexOf(".");
+					
 					String ext = filename.substring(e + 1);
+			/*		
+try {
+				
+					byte[] bytes = Base64.decode(filedata);
+					
+					InputStream myInputStream = new ByteArrayInputStream(bytes);
+					
+					Template.setProperty("filename", filename);
+					
+					Node sf_object=null;
+					if(tempn.hasNode("TemplaeFile")) {
+						sf_object=	tempn.getNode("TemplaeFile");
+					}else {
+						sf_object=	tempn.addNode("TemplaeFile");
+					}
+					String url = request.getScheme() + "://" + request.getServerName() + ":"
+							+ request.getServerPort() + request.getContextPath()
+							+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"
+							+ "TemplaeFile" + "/" + "File/" + filename;
+					
+//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplaeFile/File/TemplateTest.docx
+					Node subfileNode = null;
+					Node fileName=null;
+					Node jcrNode1 = null;
+					if (!sf_object.hasNode("File")) {
+						fileName = sf_object.addNode("File");
+						fileName.setProperty("file_url", url);
 
+					} else {
+						fileName = sf_object.getNode("File");
+						fileName.setProperty("file_url", url);
+						fileName.remove();
+						fileName = sf_object.addNode("File");
+						fileName.setProperty("file_url", url);
+					}
+					// if (!fileName.hasNode(name)) {
+					subfileNode = fileName.addNode(filename, "nt:file");
+
+					jcrNode1 = subfileNode.addNode("jcr:content", "nt:resource");
+
+					jcrNode1.setProperty("jcr:data", myInputStream);
+
+					jcrNode1.setProperty("jcr:mimeType", "attach");
+}catch (Exception ex) {
+	// TODO: handle exception
+}
+					*/
 					saveFileData sfd = new saveFileData();
 					String savepath= "/usr/local/tomcat8/apache-tomcat-8.5.35/webapps/ROOT/TemplateLibraryAdvanced/";
 					Template.setProperty("fileServerPath", savepath + template);

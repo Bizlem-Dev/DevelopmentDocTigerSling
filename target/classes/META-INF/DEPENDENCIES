@@ -15,6 +15,8 @@ From: 'an unknown organization'
     License: Common Development and Distribution License (CDDL) v1.0  (https://glassfish.dev.java.net/public/CDDLv1.0.html)
   - JavaMail API (https://glassfish.dev.java.net/javaee5/mail/) javax.mail:mail:jar:1.4
     License: Common Development and Distribution License (CDDL) v1.0  (https://glassfish.dev.java.net/public/CDDLv1.0.html)
+  - base64 (http://iharder.net/base64/) net.iharder:base64:jar:2.3.7
+    License: Public domain 
   - Java Excel API (http://jexcelapi.sourceforge.net/) net.sourceforge.jexcelapi:jxl:jar:2.6
     License: GNU Lesser General Public License  (http://www.gnu.org/copyleft/lesser.html)
   - TagSoup (http://home.ccil.org/~cowan/XML/tagsoup/) org.ccil.cowan.tagsoup:tagsoup:jar:1.2
