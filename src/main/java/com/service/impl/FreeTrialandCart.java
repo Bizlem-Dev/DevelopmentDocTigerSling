@@ -22,7 +22,7 @@ public class FreeTrialandCart {
 	
 	public String checkfreetrial(String userid) {
 		int expireFlag=0;
-		String addr = "http://"+bundleststic.getString("Sling_ip")+":8086/apirest/trialmgmt/trialuser/"+userid+"/DocTigerFreeTrial";
+		String addr = bundleststic.getString("Freetrialurl")+userid+"/DocTigerFreeTrial";
 		//String addr = "http://dev.bizlem.io:8086/apirest/trialmgmt/trialuser/"+userid+"/DocTigerFreeTrial";
 		String username = "username";
 		String password = "password";
