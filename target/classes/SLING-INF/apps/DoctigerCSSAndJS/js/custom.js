@@ -6,7 +6,8 @@ if(document.getElementById("email").value=="anonymous"){
 	var Email= document.getElementById("email").value;
 }
 var SFEmail= document.getElementById("email").value;
-var ip="http://35.200.169.114";
+var ip="http://prod.bizlem.io";
+	//"http://35.200.169.114";
 var port="8082";
 
 console.log(Email);
