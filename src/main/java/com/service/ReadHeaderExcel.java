@@ -18,9 +18,11 @@ public class ReadHeaderExcel {
 		ReadHeaderExcel a = new ReadHeaderExcel();
 		try {
 			String i = a.callget("http://35.236.154.164:8082/portal/content/user/viki_gmail.com/DocTigerAdvanced/Excel/0/test_2.xls/test_2.xls");
-			
-			//a.getJsondatabypk( "doctiger@xyz.com",  "http://35.236.154.164:8082/portal/content/user/doctiger_xyz.com/DocTigerAdvanced/Excel/0/demo.xls/demo.xls",  "id",  "2");
-System.out.println(i);
+		String g="http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/8/invoicetest.xls/invoicetest.xls";	
+		String t="http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/9/testinvoice.xls/testinvoice.xls";
+		a.getJsondatabypk( "doctiger@xyz.com", t,  "id",  "1");
+//			a.getJsondatabypk( "doctiger@xyz.com",  "http://35.236.154.164:8082/portal/content/user/doctiger_xyz.com/DocTigerAdvanced/Excel/0/demo.xls/demo.xls",  "id",  "2");
+System.out.println(g);
 			} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,9 +80,9 @@ System.out.println(i);
 
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
-
+					try {
 					switch (cell.getCellType()) {
-
+					
 					case Cell.CELL_TYPE_STRING:
 						// System.out.println(cell.getStringCellValue());
 						array.put(cell.getStringCellValue());
@@ -92,6 +94,9 @@ System.out.println(i);
 						array.put(Double.toString(cell.getNumericCellValue()));
 						json.put("Headers", array);
 						break;
+					}
+					}catch (Exception e) {
+						// TODO: handle exception
 					}
 
 				}
@@ -126,7 +131,7 @@ System.out.println(i);
 			System.out.println("1");
 			ins = conn.getInputStream();
 			res = getjsonReadExcel(ins, primarykeyvalue);
-			
+			System.out.println("rest= "+res);
 		
 			
 
@@ -168,7 +173,7 @@ JSONObject subobj = new JSONObject();
 
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
-
+					try {
 					switch (cell.getCellType()) {
 
 					case Cell.CELL_TYPE_STRING:
@@ -183,13 +188,16 @@ JSONObject subobj = new JSONObject();
 						json.put("Headers", header);
 						break;
 					}
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
 
 				}
 				System.out.println("header "+header);
 				}else {
 					String pk="";
 					Cell cell = row.getCell(0);
-										
+					try {			
 					switch (cell.getCellType()) {
 					case Cell.CELL_TYPE_STRING:
 						// System.out.println(cell.getStringCellValue());
@@ -201,13 +209,16 @@ JSONObject subobj = new JSONObject();
 						pk=Integer.toString((int) cell.getNumericCellValue());
 						break;
 					}
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
 						System.out.println("pk"+ pk);
 					if(pk.equalsIgnoreCase(value)) {
 						for(int i=0; i<header.length(); i++) {
 							// write a code to get json data
 							
 							Cell cell1 = row.getCell(i);
-							
+							try {
 							switch (cell1.getCellType()) {
 							case Cell.CELL_TYPE_STRING:
 								// System.out.println(cell1.getStringCellValue());
@@ -217,6 +228,9 @@ JSONObject subobj = new JSONObject();
 								// System.out.println(cell1.getNumericCellValue());
 								subobj.put(header.getString(i), Integer.toString((int) cell1.getNumericCellValue()));
 								break;
+							}
+							}catch (Exception e) {
+								// TODO: handle exception
 							}
 							
 							

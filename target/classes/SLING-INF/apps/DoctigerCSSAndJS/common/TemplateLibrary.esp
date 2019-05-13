@@ -54,7 +54,7 @@
 															    		<label>Template Name</label>
 						                                			</div>
 						                                			<div class="col-sm-6">
-							                                			<input type="text" class="form-control" name="template_name" placeholder="Template Name" id="tempName" value="">
+							                                			<input type="text" class="form-control" name="template_name" placeholder="Template Name" id="tempName" >
 						                                			</div>	
 				                                				</div>
 				                                			</div>

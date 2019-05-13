@@ -1435,6 +1435,7 @@ $('.compose-clause-save-btn').click(function(){
 		success:function(dataa){
 			//alert(dataa);
 			console.log(dataa);
+			alert("Clause saved successfully");
 			document.getElementById("clauses").innerHTML="";
 			getClauseTable();
 			/*$('.createNewClauseMain').css('display','none');
@@ -1917,6 +1918,7 @@ $.ajax({
 	success:function(dataa){
 		//alert(dataa);
 		console.log(dataa);
+		alert("Template saved successfully");
 		//var json=JSON.parse(dataa);
 		
 		/*$('.createNewTempMain').css('display','none');
@@ -1925,11 +1927,13 @@ $.ajax({
 		$('.external-parameter-main-template').css('display','none');
 		$('.compose-clause-main-template').css('display','none');
 		*/
+		
 		getTemplateTable();
+		window.location.reload();
 		$('.compose-clause-main-template').css('display','none');
 		$('.table-clause-template').show();
 		$('.table-clause-template-main').css('display','block');
-		//window.location.reload();
+	
 	}
 });
 }
@@ -2068,6 +2072,7 @@ $('.mail-temp-external-save-next').click(function(){
 			success:function(dataa){
 				//alert(dataa);
 				console.log(dataa);
+				alert("MailTemplate saved successfully");
 				$('.external-parameter-mail-temp-main').css('display','none');
 				$('.compose-clause-mail-temp-main').css('display','block');
 				$('.compose-clause-sms-temp-main').css('display','none');
@@ -4943,7 +4948,9 @@ $('.savenewevent-comm').click(function () {
 	contentType: 'application/json',
 	success: function (dataa) {
 	console.log("dataa "+dataa);
+	alert("Event saved successfully");
 	console.log("*************************excel "+JSON.stringify(dataa));
+	
 	var status=dataa.status
 	if(status=="success"){
 
