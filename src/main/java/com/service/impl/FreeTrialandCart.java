@@ -16,7 +16,7 @@ public class FreeTrialandCart {
 
 	public static void main(String[] args) {
 		
-		new FreeTrialandCart().checkfreetrial("doctiger8@gmail.com");
+		new FreeTrialandCart().checkfreetrial("viki@gmail.com");
 	//"mohit.raj@bizlem.com"	
 	}
 	
