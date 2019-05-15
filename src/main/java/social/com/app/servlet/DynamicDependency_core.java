@@ -160,7 +160,9 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //							out.println("toemail= " + toemail);
 						}else 
 						{
+							//pass of doctiger
 							fromPass="doctiger@123";
+//							out.println("fromPass= " + fromPass);
 						}
 					}
 					}catch (Exception e) {
