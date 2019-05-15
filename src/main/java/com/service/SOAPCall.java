@@ -29,7 +29,9 @@ public class SOAPCall {
 //		//String a="TemplateName=Template1&filename=Template1.docx&jsonstring={\"sdvsv\":\"vsdsv\"}";
 //		JSONObject obj = new JSONObject();
 		try {
-			
+			String ob="{\"to\":\"tejal.jabade@bizlem.com\",\"fromId\":\"doctigertest@gmail.com\",\"fromPass\":\"bizlem786\",\"subject\":\"Testing Send Mail From MailTemlate\",\"body\":\r\n" + 
+					"\"<p>Hello  Tejal ,<\\/p>\\n\\n<p>How are you?<\\/p>\\n\\n <p><strong>This is test mail sent from DocTiger.<\\/strong><\\/p>\\n\\n <p><u>hiiiiiiiiii<\\/u<\\/p>\\n\\n <p> 1 <\\/p>\\n\\n <p>Thanks<\\/p>\\n\\n<p>&nbsp;<\\/p>\\n\"}";
+			JSONObject sendobj1 = new JSONObject(ob);
 			JSONObject sendobj = new JSONObject();
 			sendobj.put("to", "tejal.jabade@bizlem.com");
 			sendobj.put("fromId", "doctigertest@gmail.com");
@@ -38,9 +40,10 @@ public class SOAPCall {
 			String bd="<p>Dear $$Name$$</p>\r\n<p>This is test mail. \r\n </p><p>Thanks,</p><p> </p>";
 			sendobj.put("body", bd);
 		
-		
-			System.out.println("sendobj  " + sendobj);
-			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj);
+//		"fromId":"scorpiorisalert@gmail.com",
+//			"fromPass":"bizlem786"
+			System.out.println("sendobj  " + sendobj1);
+			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj1);
 			System.out.println("mail Status "+st);
 		
 //			obj.put("noOfProperties", "2");
@@ -77,8 +80,8 @@ System.out.println("start");
 //			
 			
 			
-			
-		new SOAPCall().sendGet("") ;
+//			
+//		new SOAPCall().sendGet("") ;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
