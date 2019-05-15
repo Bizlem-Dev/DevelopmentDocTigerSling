@@ -114,7 +114,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 
 			for (int ii = 0; ii < arr.length(); ii++) {
 				CTrecord = arr.getJSONObject(ii);
-				//out.println(CTrecord);
+//				out.println("CTrecord = " +CTrecord);
 				String docurl="";
 				if(CTrecord.has("AttachedTempType")) {
 					String Templatename = CTrecord.getString("AttachedTempName");
@@ -130,21 +130,41 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 				
 //				out.println("mail process");
 				if (CTrecord.has("CT") && CTrecord.getString("CT").contains("Mail")) {
+//					out.println("CTrecord = in mail" );
 					String MailTemplate = CTrecord.getString("MailTempName");
 					// call method to get template info
-					// out.println("MailTemplate " + MailTemplate);
+//					 out.println("MailTemplate " + MailTemplate);
 
 					JSONObject maildata = parseSlingData.getMailTemplatedata(email, MailTemplate, SFObject, Primery_key,
 							Primery_key_value, SFData, rep); //,session
+//					out.println("SFData= " + maildata);
 //					out.println("SFData= " + SFData);
 					JSONArray resar=SFData.getJSONArray("response");
+					
+					
 					String toemail="";
+					String fromId="";
+					String fromPass="";
 					try {
 					for(int k=0;k<resar.length();k++) {
 						JSONObject jsobj=resar.getJSONObject(k);
 						if(jsobj.has("Email")) {
 							toemail=jsobj.getString("Email");
 //							out.println("toemail= " + toemail);
+						}
+						if(jsobj.has("fromId")) {
+							fromId=jsobj.getString("fromId");
+//							out.println("fromId= " + fromId);
+						}else {
+							
+							fromId="doctigertest@gmail.com";
+						}
+						if(jsobj.has("fromPass")) {
+							fromPass=jsobj.getString("fromPass");
+//							out.println("fromPass= " + fromPass);
+						}else 
+						{
+							fromPass=	"doctiger@123";
 						}
 					}
 					}catch (Exception e) {
@@ -155,25 +175,40 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					JSONObject sendobj = new JSONObject();
 //					sendobj.put("to", maildata.get("to"));
 					sendobj.put("to",toemail);
-					sendobj.put("fromId", "doctigertest@gmail.com");
-					sendobj.put("fromPass", "doctiger@123");
+//					sendobj.put("fromId", "doctigertest@gmail.com");
+//					sendobj.put("fromPass", "doctiger@123");
+					sendobj.put("fromId", fromId);
+					sendobj.put("fromPass",fromPass);
 					sendobj.put("subject", maildata.get("subject"));
+					
+					
+					
+					
 //					out.println("newbody old= "+maildata.get("body").toString());
 //					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
 //					out.println("newbody = "+newbody);
 					
-					sendobj.put("body",maildata.get("body").toString());
+					sendobj.put("body",maildata.get("body"));
 					if (maildata.has("attachurl")) {
 						sendobj.put("attachFilePath", maildata.get("attachurl"));
 					}
 //					out.println("sendobj  " + sendobj);
-					// out.println("Mailsendobj "+sendobj);
+//					 out.println("Mailsendobj "+sendobj);
 					String sendMailUrl = "http://" + bundleststic.getString("DocGenServerIP")
 							+ ":8080/NewMail/getFileAttachServlet";
-
+//					out.println("sendMailUrl  " + sendMailUrl);
 //				    					status = 
+					try {
 					int st = new SOAPCall().callPostJSonModified(sendMailUrl, sendobj);
 //					out.println("mail Status " + st);
+					}catch (Exception e) {
+//						out.println("exc in Status " + e);
+						// TODO: handle exception
+					}
+				
+				}else {
+//					out.println("no ct CTrecord = " +CTrecord);
+					
 				}
 				
 				
