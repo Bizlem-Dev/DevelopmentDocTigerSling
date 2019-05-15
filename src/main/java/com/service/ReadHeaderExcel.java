@@ -18,9 +18,9 @@ public class ReadHeaderExcel {
 		ReadHeaderExcel a = new ReadHeaderExcel();
 		try {
 			String i = a.callget("http://35.236.154.164:8082/portal/content/user/viki_gmail.com/DocTigerAdvanced/Excel/0/test_2.xls/test_2.xls");
-		String g="http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/8/invoicetest.xls/invoicetest.xls";	
+		String g="http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/20/Doctiger sales receipt.xls/Doctiger sales receipt.xls";	
 		String t="http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/9/testinvoice.xls/testinvoice.xls";
-		a.getJsondatabypk( "doctiger@xyz.com", t,  "id",  "1");
+		a.getJsondatabypk( "doctiger@xyz.com", g,  "id",  "1");
 //			a.getJsondatabypk( "doctiger@xyz.com",  "http://35.236.154.164:8082/portal/content/user/doctiger_xyz.com/DocTigerAdvanced/Excel/0/demo.xls/demo.xls",  "id",  "2");
 System.out.println(g);
 			} catch (Exception e) {
