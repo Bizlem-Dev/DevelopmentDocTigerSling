@@ -155,14 +155,16 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					JSONObject sendobj = new JSONObject();
 //					sendobj.put("to", maildata.get("to"));
 					sendobj.put("to",toemail);
-					sendobj.put("fromId", "doctigertest@gmail.com");
-					sendobj.put("fromPass", "doctiger@123");
+//					sendobj.put("fromId", "doctigertest@gmail.com");
+//					sendobj.put("fromPass", "doctiger@123");
+					sendobj.put("fromId", "scorpiorisalert@gmail.com");
+					sendobj.put("fromPass", "bizlem786");
 					sendobj.put("subject", maildata.get("subject"));
 //					out.println("newbody old= "+maildata.get("body").toString());
 //					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
 //					out.println("newbody = "+newbody);
 					
-					sendobj.put("body",maildata.get("body").toString());
+					sendobj.put("body",maildata.get("body"));// + "\r\n" + docurl
 					if (maildata.has("attachurl")) {
 						sendobj.put("attachFilePath", maildata.get("attachurl"));
 					}
