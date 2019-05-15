@@ -139,12 +139,28 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //					out.println("SFData= " + SFData);
 					JSONArray resar=SFData.getJSONArray("response");
 					String toemail="";
+					String fromId="";
+					String fromPass="";
 					try {
 					for(int k=0;k<resar.length();k++) {
 						JSONObject jsobj=resar.getJSONObject(k);
 						if(jsobj.has("Email")) {
 							toemail=jsobj.getString("Email");
 //							out.println("toemail= " + toemail);
+						}
+						if(jsobj.has("fromId")) {
+							fromId=jsobj.getString("fromId");
+//							out.println("toemail= " + toemail);
+						}else {
+							
+							fromId="doctigertest@gmail.com";
+						}
+						if(jsobj.has("fromPass")) {
+							fromPass=jsobj.getString("fromPass");
+//							out.println("toemail= " + toemail);
+						}else 
+						{
+							fromPass=	"bizlem786";
 						}
 					}
 					}catch (Exception e) {
@@ -157,8 +173,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					sendobj.put("to",toemail);
 //					sendobj.put("fromId", "doctigertest@gmail.com");
 //					sendobj.put("fromPass", "doctiger@123");
-					sendobj.put("fromId", "scorpiorisalert@gmail.com");
-					sendobj.put("fromPass", "bizlem786");
+					sendobj.put("fromId", fromId);
+					sendobj.put("fromPass",fromPass);
 					sendobj.put("subject", maildata.get("subject"));
 //					out.println("newbody old= "+maildata.get("body").toString());
 //					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
