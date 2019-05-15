@@ -154,6 +154,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 						}else {
 							
 							fromId="doctigertest@gmail.com";
+//							out.println("fromId= " + fromId);
 						}
 						if(jsobj.has("fromPass")) {
 							fromPass=jsobj.getString("fromPass");
