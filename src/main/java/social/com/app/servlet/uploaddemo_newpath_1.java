@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ResourceBundle;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
@@ -23,6 +25,7 @@ import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.jcr.api.SlingRepository;
 
 import com.service.ParseSlingData;
+import com.service.SOAPCall;
 import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
 import com.sun.jersey.core.util.Base64;
@@ -41,7 +44,8 @@ public class uploaddemo_newpath_1 extends SlingAllMethodsServlet {
 
 	@Reference
 	private SlingRepository repo;
-	
+	ResourceBundle bundle = ResourceBundle.getBundle("config");
+	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
 	@Reference
 	//private ParseSlingData parseSlingData;
 	ParseSlingData parseSlingData= new ParseSlingDataImpl();
@@ -96,6 +100,14 @@ public class uploaddemo_newpath_1 extends SlingAllMethodsServlet {
 				}
 				
 				String data = resultjsonobject.getString("filedata");
+				/* Integration of doctiger with leadautoconverter.  */
+				String leadautoconverterApi="http://"+bundleststic.getString("Sling_ip")+":8082/portal/servlet/service/uploadPersonalSubscibersExcel";
+				try {
+					new SOAPCall().callPostJSonModified(leadautoconverterApi,resultjsonobject);
+					
+				}catch (Exception ec) {
+					// TODO: handle exception
+				}
 				
 				byte[] bytes = Base64.decode(data);
 				

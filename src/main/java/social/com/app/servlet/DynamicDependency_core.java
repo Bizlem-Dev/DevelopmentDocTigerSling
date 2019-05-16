@@ -142,14 +142,25 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					JSONArray resar=SFData.getJSONArray("response");
 					
 					
-					String toemail="";
+					String attachfilenames="";
+					String attachmentPath="";
 					String fromId="";
 					String fromPass="";
+					String to="";
+					String cc="";
+					String bcc="";
+					JSONArray tojs=new JSONArray();
+					JSONArray ccjs=new JSONArray();
+					JSONArray bccjs=new JSONArray();
+					JSONArray attjs=new JSONArray();
 					try {
 					for(int k=0;k<resar.length();k++) {
 						JSONObject jsobj=resar.getJSONObject(k);
 						if(jsobj.has("Email")) {
-							toemail=jsobj.getString("Email");
+//							toemail=jsobj.getString("Email");
+							
+							to=jsobj.getString("Email");
+							tojs=separateComma(to);
 //							out.println("toemail= " + toemail);
 						}
 						if(jsobj.has("fromId")) {
@@ -166,6 +177,32 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 						{
 							fromPass=	"doctiger@123";
 						}
+				
+//						if(jsobj.has("To")) {
+//						
+////							out.println("fromPass= " + fromPass);
+//						}
+						if(jsobj.has("Cc")) {
+							cc=jsobj.getString("Cc");
+							ccjs=separateComma(cc);
+//							out.println("fromPass= " + fromPass);
+						}
+						if(jsobj.has("Bcc")) {
+							bcc=jsobj.getString("Bcc");
+							bccjs=separateComma(bcc);
+//							out.println("fromPass= " + fromPass);
+						}
+						if(jsobj.has("attachments")) {
+							attachfilenames=jsobj.getString("attachments");
+							attjs=separateComma(attachfilenames);
+//							out.println("fromPass= " + fromPass);
+						}
+						if(jsobj.has("attachmentPath")) {
+							attachmentPath=jsobj.getString("attachmentPath");
+							
+//							out.println("fromPass= " + fromPass);
+						}
+						
 					}
 					}catch (Exception e) {
 						// TODO: handle exception
@@ -173,16 +210,22 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //					out.println("maildata " + maildata);
 					// status= new Report().sendMail(maildata, docurl,"", rep);
 					JSONObject sendobj = new JSONObject();
+					/* {"to":["tejal.jabade@bizlem.com"],"fromId":"doctigertest@gmail.com","fromPass":"doctiger@123","subject":"Testing12 Send Mail From MailTemlate","body":
+					"<p>Hello  Tejal ,<\/p>\n\n<p>How are you?<\/p>\n\n <p><strong>This is test mail sent from DocTiger.<\/strong><\/p>\n\n <p><u>hiiiiiiiiii<\/u<\/p>\n\n <p> 1 <\/p>\n\n <p>Thanks<\/p>\n\n<p>&nbsp;<\/p>\n","cc":[ "anagha.rane@bizlem.com"],"bcc":["tejal.jabade@bizlem.com"],"attachments":[],"attachmentPath":""} */
+									
+					
 //					sendobj.put("to", maildata.get("to"));
-					sendobj.put("to",toemail);
+					sendobj.put("to",tojs);
 //					sendobj.put("fromId", "doctigertest@gmail.com");
 //					sendobj.put("fromPass", "doctiger@123");
 					sendobj.put("fromId", fromId);
 					sendobj.put("fromPass",fromPass);
 					sendobj.put("subject", maildata.get("subject"));
+					sendobj.put("cc",ccjs);
+					sendobj.put("bcc",bccjs);
 					
-					
-					
+					sendobj.put("attachmentPath",attachmentPath);
+					sendobj.put("attachments",attjs);
 					
 //					out.println("newbody old= "+maildata.get("body").toString());
 //					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
@@ -192,14 +235,17 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					if (maildata.has("attachurl")) {
 						sendobj.put("attachFilePath", maildata.get("attachurl"));
 					}
-//					out.println("sendobj  " + sendobj);
+					out.println("sendobj  " + sendobj);
 //					 out.println("Mailsendobj "+sendobj);
 					String sendMailUrl = "http://" + bundleststic.getString("DocGenServerIP")
 							+ ":8080/NewMail/getFileAttachServlet";
+					
+					
 //					out.println("sendMailUrl  " + sendMailUrl);
 //				    					status = 
 					try {
 					int st = new SOAPCall().callPostJSonModified(sendMailUrl, sendobj);
+					
 //					out.println("mail Status " + st);
 					}catch (Exception e) {
 //						out.println("exc in Status " + e);
@@ -270,5 +316,19 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 		} catch (Exception e) {
 			out.println(e.getMessage());
 		}
+	}
+	
+	public JSONArray separateComma(String list) {
+	JSONArray js=new JSONArray();
+	 String[] array = list.split(",");
+     System.out.println("comma separated String: " + array);
+
+     JSONArray jsa=new JSONArray();
+     for(int i=0;i<array.length;i++) {
+     	
+     	jsa.put(array[i]);
+     }
+	
+	return js;
 	}
 }
