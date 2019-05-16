@@ -5004,6 +5004,8 @@ function addeventcomm(selectclass){
 	}
 
 //=================================================
+
+
 var qr_tempName1;																			
 $('.btn-QRcode').click(function(){
 	console.log("In function");
