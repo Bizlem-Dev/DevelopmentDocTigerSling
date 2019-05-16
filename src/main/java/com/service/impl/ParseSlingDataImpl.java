@@ -817,7 +817,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 				}
 				newjson.put("floorplanarr", floorplanarr.toString());
 
-//				out.println("newjson2 " +newjson);
+//				out.println("newjson2DocGenServerIP " +newjson);
 
 				templatename_url = new SOAPCall().callPostJSonModified(
 						"http://"+bundleststic.getString("DocGenServerIP")+":8080/DocTigerSFCore/documentgenerationserv", newjson);
