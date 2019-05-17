@@ -29,7 +29,9 @@ public class SOAPCall {
 //		//String a="TemplateName=Template1&filename=Template1.docx&jsonstring={\"sdvsv\":\"vsdsv\"}";
 //		JSONObject obj = new JSONObject();
 		try {
-			
+			String sts="{\"to\":[\"tejal.jabade@bizlem.com\"],\"fromId\":\"doctigertest@gmail.com\",\"fromPass\":\"doctiger@123\",\"subject\":\"Testing125 Send Mail From MailTemlate\",\"body\":\r\n" + 
+					"\"<p>Hello  Tejal ,<\\/p>\\n\\n<p>How are you?<\\/p>\\n\\n <p><strong>This is test mail sent from DocTiger.<\\/strong><\\/p>\\n\\n <p><u>hiiiiiiiiii<\\/u<\\/p>\\n\\n <p> 1 <\\/p>\\n\\n <p>Thanks<\\/p>\\n\\n<p>&nbsp;<\\/p>\\n\",\"cc\":[ \"anagha.rane@bizlem.com\"],\"bcc\":[\"tejal.jabade@bizlem.com\"],\"attachments\":[],\"attachmentPath\":\"\"}";
+			JSONObject sendobj2 = new JSONObject(sts);
 			JSONObject sendobj = new JSONObject();
 			sendobj.put("to", "tejal.jabade@bizlem.com");
 			sendobj.put("fromId", "doctigertest@gmail.com");
@@ -39,8 +41,8 @@ public class SOAPCall {
 			sendobj.put("body", bd);
 		
 		
-			System.out.println("sendobj  " + sendobj);
-			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj);
+			System.out.println("sendobj  " + sendobj2);
+			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj2);
 			System.out.println("mail Status "+st);
 		
 //			obj.put("noOfProperties", "2");
