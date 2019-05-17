@@ -4950,7 +4950,7 @@ $('.savenewevent-comm').click(function () {
 	console.log("dataa "+dataa);
 	alert("Event saved successfully");
 	console.log("*************************excel "+JSON.stringify(dataa));
-	
+	window.location.reload();
 	var status=dataa.status
 	if(status=="success"){
 
