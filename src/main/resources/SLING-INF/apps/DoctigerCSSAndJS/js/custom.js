@@ -1053,6 +1053,7 @@ $('.create-new-template-btn').click(function(e){
 
 var result;
 var tempmainJson={};
+var dwldtemp="";
 $('.template-library-save-next').click(function(){
 	/*{"templatename":"temp1","metadata":"m1","email":"doctiger@xyz.com","username":"user@gmail.com",
 	"description":"descr","externalparam":"true","saveType":"new","SFEmail":""}*/
@@ -1083,12 +1084,24 @@ $('.template-library-save-next').click(function(){
 			console.log(tempdata);
 			var json=JSON.parse(tempdata);
 			var tempName=json.templatename;
+			 dwldtemp=json.templateurl;
+			console.log("dwldtemp :: "+dwldtemp);
+			
 			document.getElementById("tempName").value=tempName;
 			console.log(document.getElementById("tempName").value);
 			$('.createNewTempMain').css('display','none');
 			$('.select-sfdc-object-main-template').css('display','block');
 		}
 	});
+});
+
+//id="dwldlink" to download template need to change
+$('.downloadtemplate').click(function getlink() {
+	console.log("link dwldtemp= " + dwldtemp);
+
+	var a = document.getElementById('downldtemplink'); // or grab it by tagname etc
+	a.href = dwldtemp;
+
 });
 
 $('.create-new-mail-template-btn').click(function(e){

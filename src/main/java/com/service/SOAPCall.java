@@ -54,8 +54,15 @@ public class SOAPCall {
 			JSONObject ledjs1=new JSONObject(leadjs);
 			System.out.println("leadjs  " + leadjs);
 			String leadauto="http://prod.bizlem.io:8082/portal/servlet/service/uploadPersonalSubscibersExcel";
-//			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", sendobj1);
-			int st=			new SOAPCall().callPostJSonModified(leadauto, ledjs1);
+			String jj="{\"to\":[\"abhishek.tiwari@bizlem.com\",\"tejal.bizlem@gmail.com\"],\r\n" + 
+					"\"fromId\":\"doctigertest@gmail.com\",\r\n" + 
+					"\"fromPass\":\"doctiger@123\",\"subject\":\"hello mail\",\"cc\":[\"vivek@bizlem.com\"],\"bcc\":[\"anagha.rane@bizlem.com\"],\r\n" + 
+					"\"attachmentPath\":\"/home/ubuntu/apache-tomcat-8.5.31/webapps/ROOT/\",\r\n" + 
+					"\"attachments\":[\"tempnocolr_18-May-2019_13-35-19-997.pdf\"],\"body\":\r\n" + 
+					"\"<p>hello<\\/p>\\n\"}";
+			JSONObject jso=new JSONObject(jj);
+			int st=			new SOAPCall().callPostJSonModified("http://35.243.163.58:8080/NewMail/getFileAttachServlet", jso);
+//			int st=			new SOAPCall().callPostJSonModified(leadauto, ledjs1);
 			
 			System.out.println("mail Status "+st);
 		

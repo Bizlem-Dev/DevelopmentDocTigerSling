@@ -24,6 +24,7 @@ import org.apache.sling.jcr.api.SlingRepository;
 
 import com.service.ParseSlingData;
 import com.service.SOAPCall;
+import com.service.UploadTemplateServer;
 import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
 
@@ -54,6 +55,23 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		out.println("in DD");
+        try {
+        	String generatedfile="ArrayNew_17-May-2019_11-40-55-238.pdf";
+	        UploadTemplateServer ftp = new UploadTemplateServer(bundleststic.getString("DocGenServerIP"),22,bundleststic.getString("DocGenServerUsername"),bundleststic.getString("DocGenServerPass"));
+	        out.println("in DD generatedfile "+generatedfile);
+	        String connserver=ftp.connect();
+	        out.println("in DD connserver "+connserver);
+		 String servp="/home/ubuntu/apache-tomcat-8.5.31/webapps/ROOT/";        
+		 String rp="D:\\DOCTIGER114IPProject\\testing docx\\reports\\";
+		 out.println("in DD generatedfile "+ bundleststic.getString("SlingAttachmentPath"));
+		String dw=ftp.download(servp+generatedfile, bundleststic.getString("SlingAttachmentPath"));
+		out.println("dw == "+dw);
+		out.println("done");
+//		 attjs.put(generatedfile);
+	        }catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	}
 	@Override
 	protected void doPost(SlingHttpServletRequest req, SlingHttpServletResponse rep) throws ServletException, IOException {
@@ -83,7 +101,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 			String Primery_key = resultobj.getString("Primery_key");
 			String Primery_key_value = resultobj.getString("Primery_key_value");
 			JSONObject SFData= resultobj.getJSONObject("SFData");
-
+			JSONArray attjs=new JSONArray();
 			//out.println("SFData  "+SFData);
 			//				if(EventName.equals("SPA Event")) {
 			//					out.print("http://35.188.233.86:8080/Template1_21-Sep-2018_08-23-35-818.pdf,http://35.188.233.86:8080/LTL_Fixed_Return_annex_Finalized_14_Aug_2018_24-Oct-2018_15-16-46-128.pdf,"
@@ -121,11 +139,29 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					//out.println(Templatename);
 					// call method to get template info
 					String AttachtempalteType = CTrecord.getString("AttachedTempType");
-
+					try {
 					docurl = parseSlingData.getADVandTemplatedata(email, Templatename, AttachtempalteType, SFObject,
 							Primery_key, Primery_key_value,SFData, rep);
 					// String docurl="";
+					
 					out.println(docurl);
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
+					if(docurl!=null&&docurl!="") {
+				       int o= docurl.lastIndexOf("/");
+				       String generatedfile = docurl.substring(o+1,docurl.length());
+//				        out.println("comma separated ooooo: " +generatedfile);
+//				        DocGenServerIP=35.243.163.58    DocGenServerUsername=ubuntu 	DocGenServerPass=$DocTiger@123$
+					
+				        try {
+				        	
+				      	 attjs.put(generatedfile);
+				        	
+				        }catch (Exception e) {
+						// TODO: handle exception
+					}
+					}
 				}
 				
 //				out.println("mail process");
@@ -143,7 +179,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					
 					
 					String attachfilenames="";
-					String attachmentPath="";
+					String attachmentPath=bundleststic.getString("DocGenServerPDFFilePath");
 					String fromId="";
 					String fromPass="";
 					String to="";
@@ -152,7 +188,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					JSONArray tojs=new JSONArray();
 					JSONArray ccjs=new JSONArray();
 					JSONArray bccjs=new JSONArray();
-					JSONArray attjs=new JSONArray();
+					
 					try {
 					for(int k=0;k<resar.length();k++) {
 						JSONObject jsobj=resar.getJSONObject(k);
@@ -160,8 +196,18 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //							toemail=jsobj.getString("Email");
 							
 							to=jsobj.getString("Email");
-							tojs=separateComma(to);
-//							out.println("toemail= " + toemail);
+							
+							 String[] array = to.split(",");
+						     System.out.println("comma separated String: " + array);
+
+					
+						     for(int i=0;i<array.length;i++) {
+						     	
+						    	 tojs.put(array[i]);
+						     }
+//							tojs=separateComma(to);
+//							out.println("toemail= " + to);
+//							out.println("tojs= " + tojs);
 						}
 						if(jsobj.has("fromId")) {
 							fromId=jsobj.getString("fromId");
@@ -184,20 +230,49 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //						}
 						if(jsobj.has("Cc")) {
 							cc=jsobj.getString("Cc");
-							ccjs=separateComma(cc);
-//							out.println("fromPass= " + fromPass);
+							
+							 String[] array = cc.split(",");
+						     System.out.println("comma separated String: " + array);
+
+					
+						     for(int i=0;i<array.length;i++) {
+						     	
+						    	 ccjs.put(array[i]);
+						     }
+//							ccjs=separateComma(cc);
+//							out.println("ccjs= " + ccjs);
 						}
 						if(jsobj.has("Bcc")) {
 							bcc=jsobj.getString("Bcc");
-							bccjs=separateComma(bcc);
-//							out.println("fromPass= " + fromPass);
+//							bccjs=separateComma(bcc);
+							 String[] array = bcc.split(",");
+						     System.out.println("comma separated String: " + array);
+
+					
+						     for(int i=0;i<array.length;i++) {
+						     	
+						    	 bccjs.put(array[i]);
+						     }
+							
+//							out.println("bccjs= " + bccjs);
 						}
 						if(jsobj.has("attachments")) {
 							attachfilenames=jsobj.getString("attachments");
-							attjs=separateComma(attachfilenames);
-//							out.println("fromPass= " + fromPass);
+//							out.println("comma separated len: " + attachfilenames.length());
+							if(attachfilenames.length()>0) {
+							 String[] array = attachfilenames.split(",");
+						     System.out.println("comma separated String: " + array);
+
+					
+						     for(int i=0;i<array.length;i++) {
+						     	
+						    	 attjs.put(array[i]);
+						     }
+//							attjs=separateComma(attachfilenames);
+//							out.println("attjs= " + attjs);
+							}
 						}
-						if(jsobj.has("attachmentPath")) {
+						if(jsobj.has("attachmentPath") && jsobj.get("attachmentPath") !="") {
 							attachmentPath=jsobj.getString("attachmentPath");
 							
 //							out.println("fromPass= " + fromPass);
@@ -231,12 +306,13 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 //					String newbody=maildata.get("body").toString().replaceAll("<p>", "").replaceAll("</p>", "\r\n");
 //					out.println("newbody = "+newbody);
 					
-					sendobj.put("body",maildata.get("body"));
+					sendobj.put("body",maildata.get("body")); //+ "\r\n" + docurl
 					if (maildata.has("attachurl")) {
 						sendobj.put("attachFilePath", maildata.get("attachurl"));
 					}
-					out.println("sendobj  " + sendobj);
+					out.println("sendobj :: " + sendobj);
 //					 out.println("Mailsendobj "+sendobj);
+					///home/ubuntu/apache-tomcat-8.5.31/webapps/ROOT
 					String sendMailUrl = "http://" + bundleststic.getString("DocGenServerIP")
 							+ ":8080/NewMail/getFileAttachServlet";
 					
@@ -246,7 +322,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					try {
 					int st = new SOAPCall().callPostJSonModified(sendMailUrl, sendobj);
 					
-//					out.println("mail Status " + st);
+					out.println("mail Status " + st);
 					}catch (Exception e) {
 //						out.println("exc in Status " + e);
 						// TODO: handle exception

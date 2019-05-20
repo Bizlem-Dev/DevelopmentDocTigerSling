@@ -148,7 +148,11 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 									out.println(js);
 								}
 							}
-
+							String tempurl="";
+							if(Template.hasProperty("TemplateUrl")) {
+//								Template.setProperty("TemplateUrl", url);
+								tempurl=Template.getProperty("TemplateUrl").getString();
+							}
 							long flag = 1;
 							Date d1 = new Date();
 							Template.setProperty("saveType", saveType);
@@ -166,6 +170,7 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 							js.put("saveType", saveType);
 							js.put("email", email);
 							js.put("templatename", template);
+							js.put("templateurl", tempurl);
 							session.save();
 							out.println(js);
 						} catch (Exception e) {
@@ -552,7 +557,7 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 					int e = filename.indexOf(".");
 					
 					String ext = filename.substring(e + 1);
-			/*		
+				// Download the document on UI
 try {
 				
 					byte[] bytes = Base64.decode(filedata);
@@ -562,17 +567,19 @@ try {
 					Template.setProperty("filename", filename);
 					
 					Node sf_object=null;
-					if(tempn.hasNode("TemplaeFile")) {
-						sf_object=	tempn.getNode("TemplaeFile");
+					if(Template.hasNode("TemplateFile")) {
+						sf_object=	Template.getNode("TemplateFile");
 					}else {
-						sf_object=	tempn.addNode("TemplaeFile");
+						sf_object=	Template.addNode("TemplateFile");
 					}
+					
+					//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/File/Document.docx
+					//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/Document.docx
 					String url = request.getScheme() + "://" + request.getServerName() + ":"
 							+ request.getServerPort() + request.getContextPath()
-							+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"
-							+ "TemplaeFile" + "/" + "File/" + filename;
-					
-//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplaeFile/File/TemplateTest.docx
+							+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
+					Template.setProperty("TemplateUrl", url);
+//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplateFile/TemplateTest.docx
 					Node subfileNode = null;
 					Node fileName=null;
 					Node jcrNode1 = null;
@@ -598,7 +605,7 @@ try {
 }catch (Exception ex) {
 	// TODO: handle exception
 }
-					*/
+					
 					saveFileData sfd = new saveFileData();
 					String savepath= "/usr/local/tomcat8/apache-tomcat-8.5.35/webapps/ROOT/TemplateLibraryAdvanced/";
 					Template.setProperty("fileServerPath", savepath + template);

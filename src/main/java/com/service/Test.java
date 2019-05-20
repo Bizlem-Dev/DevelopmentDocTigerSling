@@ -23,7 +23,8 @@ public class Test {
 		
 		
 
-        String languages = "";// tejal.biz.com,ghgu@gmail.com,C++,Python,Ruby,Scala
+        String languages = "tejal.biz.com,ghgu@gmail.com";// tejal.biz.com,ghgu@gmail.com,C++,Python,Ruby,Scala
+        
 
         // splitting String by comma, it will return array
         String[] array = languages.split(",");
@@ -39,8 +40,15 @@ public class Test {
         System.out.println("comma separated String: " + languages);
         System.out.println("array of String: " + Arrays.toString(array));
 //        System.out.println("list of String: " + list);
+        String genurl = "http://35.243.163.58:8080/ArrayNew_17-May-2019_11-40-55-238.pdf";// tejal.biz.com,ghgu@gmail.com,C++,Python,Ruby,Scala
+       int o= genurl.lastIndexOf("/");
+       String cdDir = genurl.substring(o+1,genurl.length());
+        System.out.println("comma separated ooooo: " +cdDir);
+        
 		}
 		
+	
+	
 	}
 
 /*  {"Email":"viki@gmail.com","EventId":"18","EventName":"evtscr221114","database":"ws","Primery_key":"ID","SFObject":"","Primery_key_value":"1","SFData":{"response":[{

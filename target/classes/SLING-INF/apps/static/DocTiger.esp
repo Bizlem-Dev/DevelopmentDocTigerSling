@@ -72,25 +72,25 @@
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane" id="clauseLibrary">
-								<%load("../common/ClauseLibrary.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/ClauseLibrary.esp");%></div>
 
 							<div class="tab-pane" id="templateLibrary">
-								<%load("../common/TemplateLibrary.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/TemplateLibrary.esp");%></div>
 
 							<div class="tab-pane" id="mailTemplateNew">
-								<%load("../common/MailTemplate.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/MailTemplate.esp");%></div>
 
 							<div class="tab-pane" id="communication">
-								<%load("../common/Communication.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/Communication.esp");%></div>
 
 							<div class="tab-pane" id="workflow">
-								<%load("../common/Workflow.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/Workflow.esp");%></div>
 
 							<div class="tab-pane" id="dymanicDocument">
-								<%load("../common/DynamicDoc.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/DynamicDoc.esp");%></div>
 
 							<div class="tab-pane" id="ruleEngine">
-								<%load("../common/RuleEngine.esp");%></div>
+								<%load("/apps/DoctigerCSSAndJS/common/RuleEngine.esp");%></div>
 
 						</div>
 					</div>
