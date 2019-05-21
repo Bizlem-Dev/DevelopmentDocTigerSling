@@ -172,6 +172,58 @@ return userresult;
 
    		}
 
+       public String callAttachmentJSon(String urlstr, JSONObject Obj) {
+   		
+      		StringBuffer response =null;
+      		int responseCode = 0;
+      		String urlParameters = "";
+      		String resp=null;
+      		try {
+
+      		URL url = new URL(urlstr);
+      		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      		con.setRequestMethod("POST");
+
+      		con.setRequestProperty("Content-Type", "application/json;");
+      		//		+ "charset=UTF-8");
+      	//	con.setRequestProperty("Accept-Charset", "UTF-8");
+
+      		con.setDoOutput(true);
+      		 DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+      		 wr.writeBytes(Obj.toString());
+      		 wr.flush();
+      		 wr.close();
+            System.out.println("Obj "+Obj);
+            //   		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            //   		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr));
+            //   		writer.write(Obj.toString());
+            //   		writer.close();
+            //   		wr.close();
+
+      		responseCode = con.getResponseCode();
+          System.out.println("responseCode "+responseCode);
+          
+      		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+      		String inputLine;
+      		response = new StringBuffer();
+
+      		while ((inputLine = in.readLine()) != null) {
+      		response.append(inputLine);
+      		}
+      		in.close();
+
+      		System.out.println(response.toString());
+      		
+      		resp=response.toString();
+      		System.out.println("end");
+
+      		}catch (Exception e) {
+      		//return e.getMessage();
+      			resp=e.getMessage();
+      		}
+      		return resp;
+
+      		}
    		
 
 

@@ -795,6 +795,18 @@ $('.clause-library-save-next').click(function saveClause(){
 	});
 });
 
+/*
+  
+ */
+//id="dwldlink" to download template need to change
+$('.downloadtemplate').click(function getlink() {
+	console.log("link dwldtemp= " + dwldtemp);
+
+	var a = document.getElementById('downldtemplink'); // or grab it by tagname etc
+	a.href = dwldtemp;
+
+});
+
 $('body').on('click','.upload_file',function(){
 	var $this=$(this);
 	if($this.is(':checked')){
