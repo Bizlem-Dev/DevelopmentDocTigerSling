@@ -1,14 +1,21 @@
 package social.com.app.servlet;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Properties;
@@ -27,6 +34,7 @@ import com.service.SOAPCall;
 import com.service.UploadTemplateServer;
 import com.service.impl.FreeTrialandCart;
 import com.service.impl.ParseSlingDataImpl;
+import com.sun.jersey.core.util.Base64;
 
 @Component(immediate = true, metatype = false)
 @Service(value = javax.servlet.Servlet.class)
@@ -56,18 +64,116 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 		out.println("in DD");
         try {
-        	String generatedfile="ArrayNew_17-May-2019_11-40-55-238.pdf";
-	        UploadTemplateServer ftp = new UploadTemplateServer(bundleststic.getString("DocGenServerIP"),22,bundleststic.getString("DocGenServerUsername"),bundleststic.getString("DocGenServerPass"));
-	        out.println("in DD generatedfile "+generatedfile);
-	        String connserver=ftp.connect();
-	        out.println("in DD connserver "+connserver);
-		 String servp="/home/ubuntu/apache-tomcat-8.5.31/webapps/ROOT/";        
-		 String rp="D:\\DOCTIGER114IPProject\\testing docx\\reports\\";
-		 out.println("in DD generatedfile "+ bundleststic.getString("SlingAttachmentPath"));
-		String dw=ftp.download(servp+generatedfile, bundleststic.getString("SlingAttachmentPath"));
-		out.println("dw == "+dw);
-		out.println("done");
-//		 attjs.put(generatedfile);
+        	session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+        	BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
+			ByteArrayOutputStream buf = new ByteArrayOutputStream();
+			int result = bis.read();
+
+			while (result != -1) {
+				buf.write((byte) result);
+				result = bis.read();
+			}
+			String res = buf.toString("UTF-8");
+
+			JSONObject obj = new JSONObject(res);
+			JSONArray urljs = obj.getJSONArray("attachmenturl");
+
+			out.println("urljs.length()= " + urljs.length());
+      
+			out.println("urljs.length()= " + urljs.length());
+			for (int i = 0; i < urljs.length(); i++) {
+				try {
+//
+					
+					String fileurl = urljs.getString(i);
+					out.println(" fileurl: " + fileurl);
+					String filename = "";
+					if (fileurl != null && fileurl != "") {
+						int o = fileurl.lastIndexOf("/");
+						filename = fileurl.substring(o + 1, fileurl.length());
+					
+						out.println(" filename: " + filename);
+					}
+				try {
+
+				String	urlStr = fileurl.replace(" ", "%20");
+					URL url;
+					InputStream ins = null;
+					StringBuilder requestString = new StringBuilder(urlStr);
+
+					try {
+						url = new URL(requestString.toString());
+//						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+						 HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+						out.println(" filename: 1");
+//						conn.setRequestMethod("GET");
+//						conn.setRequestProperty("Accept", "application/text");
+						System.out.println("1");
+						ins = conn.getInputStream();
+						out.println(" filename:2 " + filename);
+				
+						
+						Node contentNode=null;
+						if (session.getRootNode().hasNode("content")) {
+							contentNode = session.getRootNode().getNode("content");
+						} else {
+							contentNode = session.getRootNode().addNode("content");
+						}
+						Node sf_object=null;
+						if(contentNode.hasNode("TemplateAttachmentFile")) {
+							sf_object=	contentNode.getNode("TemplateAttachmentFile");
+						}else {
+							sf_object=	contentNode.addNode("TemplateAttachmentFile");
+						}
+						String url1 ="";
+						//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/File/Document.docx
+						//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/Document.docx
+//						String url = request.getScheme() + "://" + request.getServerName() + ":"
+//								+ request.getServerPort() + request.getContextPath()
+//								+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
+//						Template.setProperty("TemplateUrl", url);
+	//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplateFile/TemplateTest.docx
+						Node subfileNode = null;
+						Node fileName=null;
+						Node jcrNode1 = null;
+						if (!sf_object.hasNode("File")) {
+							fileName = sf_object.addNode("File");
+							fileName.setProperty("file_url", url1);
+
+						} else {
+							fileName = sf_object.getNode("File");
+							fileName.setProperty("file_url", url1);
+							fileName.remove();
+							fileName = sf_object.addNode("File");
+							fileName.setProperty("file_url", url1);
+						}
+						// if (!fileName.hasNode(name)) {
+						subfileNode = fileName.addNode(filename, "nt:file");
+
+						jcrNode1 = subfileNode.addNode("jcr:content", "nt:resource");
+
+						jcrNode1.setProperty("jcr:data", ins);
+
+						jcrNode1.setProperty("jcr:mimeType", "attach");
+	}catch (Exception ex) {
+		// TODO: handle exception
+		out.println("ex :: "+ex);
+	}
+					
+					
+					out.println("files saved"+i);
+				}catch (Exception e) {
+					// TODO: handle exception
+					out.println("e :: "+e);
+				} finally {
+					
+				}
+				}catch (Exception e) {
+					// TODO: handle exception
+					out.println("e 1:: "+e);
+				}
+			}
+        	
 	        }catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -188,6 +294,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					JSONArray tojs=new JSONArray();
 					JSONArray ccjs=new JSONArray();
 					JSONArray bccjs=new JSONArray();
+					String attachfileurl = "";
+					JSONArray attachurlarr = new JSONArray();
 					
 					try {
 					for(int k=0;k<resar.length();k++) {
@@ -256,6 +364,30 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 							
 //							out.println("bccjs= " + bccjs);
 						}
+						if (jsobj.has("attachmentScorpio")&& jsobj.getString("attachmentScorpio") !="") {
+							attachfileurl = jsobj.getString("attachmentScorpio");
+//					out.println("comma separated len: " + attachfilenames.length());
+							if (attachfileurl.length() > 0) {
+								String[] array = attachfileurl.split(",");
+								System.out.println("comma separated String: " + array);
+
+								for (int i = 0; i < array.length; i++) {
+									try {
+									attachurlarr.put(array[i]);
+									String fileurl=array[i];
+									int o = fileurl.lastIndexOf("/");
+									String filename = fileurl.substring(o + 1, fileurl.length());
+									attjs.put(filename);
+									out.println("attjs - "+attjs);
+									}catch (Exception e) {
+										// TODO: handle exception
+									}
+								}
+//					attjs=separateComma(attachfilenames);
+					out.println("attachmentScorpio= " + attachurlarr);
+							}
+						}
+						
 						if(jsobj.has("attachments")) {
 							attachfilenames=jsobj.getString("attachments");
 //							out.println("comma separated len: " + attachfilenames.length());
@@ -282,12 +414,35 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					}catch (Exception e) {
 						// TODO: handle exception
 					}
+					
+					
+//	try {
+//						/* {"attachmenturl":["https://dev.bizlem.io:8082/scorpioexcel/TonnageData.xls","https://dev.bizlem.io:8082/scorpioexcel/SpotData.xls","https://dev.bizlem.io:8082/scorpioexcel/TimeCharterReportsData.xls","https://dev.bizlem.io:8082/scorpioexcel/BrokerTcRate.xls"]} */
+//						if(attachurlarr.length()>0) {
+//							JSONObject sendurl = new JSONObject();
+//							String saveattachmentserv = "http://" + bundleststic.getString("DocGenServerIP")
+//							+ ":8080/NewMail/SaveAttchmentFileServlet";
+//							sendurl.put("attachmenturl", attachurlarr);
+//							out.println("saveattachmentserv= "+saveattachmentserv);
+//							out.println("sendurl= "+sendurl);
+//					String resmethod = new SOAPCall().callAttachmentJSon(saveattachmentserv, sendurl);
+//					out.println("resmethod= "+resmethod);
+//						}
+//					}catch (Exception e) {
+//						// TODO: handle exception
+//					}
+	
+	
 //					out.println("maildata " + maildata);
 					// status= new Report().sendMail(maildata, docurl,"", rep);
 					JSONObject sendobj = new JSONObject();
 					/* {"to":["tejal.jabade@bizlem.com"],"fromId":"doctigertest@gmail.com","fromPass":"doctiger@123","subject":"Testing12 Send Mail From MailTemlate","body":
 					"<p>Hello  Tejal ,<\/p>\n\n<p>How are you?<\/p>\n\n <p><strong>This is test mail sent from DocTiger.<\/strong><\/p>\n\n <p><u>hiiiiiiiiii<\/u<\/p>\n\n <p> 1 <\/p>\n\n <p>Thanks<\/p>\n\n<p>&nbsp;<\/p>\n","cc":[ "anagha.rane@bizlem.com"],"bcc":["tejal.jabade@bizlem.com"],"attachments":[],"attachmentPath":""} */
-									
+							
+					if(attachurlarr.length()>0) {
+						sendobj.put("attachmentScorpio",attachurlarr);
+						out.println("saveattachmentserv= "+attachurlarr);
+					}
 					
 //					sendobj.put("to", maildata.get("to"));
 					sendobj.put("to",tojs);
