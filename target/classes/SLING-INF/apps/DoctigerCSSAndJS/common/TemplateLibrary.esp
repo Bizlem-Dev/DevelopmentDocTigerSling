@@ -413,7 +413,12 @@
 		                                		</div> 
 		                                		<div class="row">
 		                                			<div class="col-sm-2">
-		                                				<button class="btn btn-bg-orange down-para-btn sm-btn-custom"><i class="fa fa-download"></i></button>
+		                                			<!--	<button class="btn btn-bg-orange down-para-btn sm-btn-custom"><i class="fa fa-download"></i></button>-->
+		                                			<a class="btn btn-bg-orange down-para-btn sm-btn-custom downloadtemplate"
+									id="downldtemplink"> Download 
+										<i class="fa fa-download"></i>
+									</a> 
+								
 		                                			</div>	
 		                                			<div class="col-sm-5 col-sm-offset-1">
 		                                				<div class="form-group">
