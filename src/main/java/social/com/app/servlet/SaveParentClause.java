@@ -147,9 +147,11 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 			  if (saveType.equalsIgnoreCase("new")) {
 				  String SFEmail = obj.getString("SFEmail");
 				  if (clauseNode == null) {
+					  if (obj.has("Metadata") ) {
 					  if (obj.has("Metadata") || !obj.getString("Metadata").equals("") || !obj.getString("Metadata").equals(null)) {
 						  Metadata = obj.getString("Metadata");
 					  } else {}
+					  }
 					  ExternalParam = obj.getString("ExternalParam");
 					  if (obj.has("Description") || !obj.getString("Description").equals("") || !obj.getString("Description").equals(null)) {
 						  Description = obj.getString("Description");
@@ -245,10 +247,12 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 					  if (session.nodeExists(ClauseId)) {
 						  pclauseCountNode = session.getNode(ClauseId);
 					  }
+					  if (obj.has("Metadata") ) {
 					  if (obj.has("Metadata") || !obj.getString("Metadata").equals("") || !obj.getString("Metadata").equals(null)) {
 						  Metadata = obj.getString("Metadata");
 						  //out.println("Metadata: "+Metadata);
 					  } else {}
+					  }
 					  ExternalParam = obj.getString("ExternalParam");
 					  //out.println("ExternalParam: "+ExternalParam);
 					  if (obj.has("Description") || !obj.getString("Description").equals("") || !obj.getString("Description").equals(null)) {
@@ -861,8 +865,8 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 
 		    }
 		    appobj.put("numberOfApprover", noofapp);
-
-		    String urlstr = "http://104.196.49.81:8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
+//104.196.49.81
+		    String urlstr = "http://:"+bundleststic.getString("Jbpm_ip")+"8080/kie-server/services/rest/server/containers/com.biz:business-process:6.0/processes/ApprovalWorkflow/instances";
 		    String wokusername = "kieserver";
 		    String wokpassword = "kieserver1!";
 		    ActivateWorkflow ac = new ActivateWorkflow();
