@@ -1305,6 +1305,59 @@
         <reference name="repo" interface="org.apache.sling.jcr.api.SlingRepository" cardinality="1..1" policy="static" bind="bindRepo" unbind="unbindRepo" checked="true" strategy="event"/>
         <reference name="parseSlingData" interface="com.service.ParseSlingData" cardinality="1..1" policy="static" bind="bindParseSlingData" unbind="unbindParseSlingData" checked="true" strategy="event"/>
     </scr:component>
+    <scr:component enabled="true" immediate="true" name="social.com.app.servlet.ShoppingCartService_Updated">
+        <implementation class="social.com.app.servlet.ShoppingCartService_Updated"/>
+        <service servicefactory="false">
+            <provide interface="javax.servlet.Servlet"/>
+        </service>
+        <property name="service.description" type="String" value="Save product Servlet" private="false"/>
+        <property name="service.vendor" type="String" value="VISL Company" private="false"/>
+        <property name="sling.servlet.paths" type="String" value="/process/shoppingcart/service_updated12" private="false"/>
+        <property name="sling.servlet.resourceTypes" type="String" value="sling/servlet/default" private="false"/>
+        <property name="sling.servlet.extensions" type="String" private="false">
+            hotproducts
+            cat
+            latestproducts
+            brief
+            prodlist
+            catalog
+            viewcart
+            productslist
+            addcart
+            createproduct
+            checkmodelno
+            productEdit
+        </property>
+        <property name="service.pid" value="social.com.app.servlet.ShoppingCartService_Updated" private="false"/>
+        <reference name="repo" interface="org.apache.sling.jcr.api.SlingRepository" cardinality="1..1" policy="static" bind="bindRepo" unbind="unbindRepo" checked="true" strategy="event"/>
+    </scr:component>
+    <scr:component enabled="true" immediate="true" name="social.com.app.servlet.ShoppingCartTest">
+        <implementation class="social.com.app.servlet.ShoppingCartTest"/>
+        <service servicefactory="false">
+            <provide interface="javax.servlet.Servlet"/>
+        </service>
+        <property name="service.description" type="String" value="Save product Servlet" private="false"/>
+        <property name="service.vendor" type="String" value="VISL Company" private="false"/>
+        <property name="sling.servlet.paths" type="String" value="/process/shoppingcart/ShoppingCartUserCheckServ123" private="false"/>
+        <property name="sling.servlet.resourceTypes" type="String" value="sling/servlet/default" private="false"/>
+        <property name="sling.servlet.extensions" type="String" private="false">
+            hotproducts
+            cat
+            latestproducts
+            brief
+            prodlist
+            catalog
+            viewcart
+            productslist
+            addcart
+            createproduct
+            checkmodelno
+            productEdit
+        </property>
+        <property name="service.pid" value="social.com.app.servlet.ShoppingCartTest" private="false"/>
+        <reference name="repo" interface="org.apache.sling.jcr.api.SlingRepository" cardinality="1..1" policy="static" bind="bindRepo" unbind="unbindRepo" checked="true" strategy="event"/>
+        <reference name="parseSlingData" interface="com.service.ParseSlingData" cardinality="1..1" policy="static" bind="bindParseSlingData" unbind="unbindParseSlingData" checked="true" strategy="event"/>
+    </scr:component>
     <scr:component enabled="true" immediate="true" name="social.com.app.servlet.getHeadersFromExcel">
         <implementation class="social.com.app.servlet.getHeadersFromExcel"/>
         <service servicefactory="false">

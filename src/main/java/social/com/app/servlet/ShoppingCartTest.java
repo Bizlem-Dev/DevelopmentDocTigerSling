@@ -62,30 +62,38 @@ protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse r
 	String res;
 	out.println("prod");
 	try {
+		out = response.getWriter();
 		String userId=request.getParameter("userId");
 		String userName = userId.replace("@", "_");
+		System.out.println("userId "+userId +" userName "+userName);
+		session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 		userNode = session.getRootNode().getNode("content").getNode("user");
 		if (userNode.hasNode(userName)) {
-			//response.getOutputStream().print("true");
-			res="true";
+		//response.getOutputStream().print("true");
+		res="true";
 		} else {
-			//response.getOutputStream().print("false");
-			res="false";
+		//response.getOutputStream().print("false");
+		res="false";
 		}
-		if(res!=null && res.equals("false")){
-			String password = generateSessionKey(6);
-			String[] paramKey = {"givenName", "username", "email", "password", "confirmPassword","mobileNumber"};
-	        String[] paramValue = {"New User", userId,
-	        		userId, password, password,""};
-			callPostService("http://prod.bizlem.io/portal/app/newaccount", paramKey, paramValue);
-			out.print("true");
-			}else {
-				out.print("false");
-			}
+		out.println("res "+res);
+		if( res.equals("false")){
+		String password = generateSessionKey(6);
+		out.println("password "+password);
+		String[] paramKey = {"givenName", "username", "email", "password", "confirmPassword","mobileNumber"};
+		String[] paramValue = {"New User", userId,
+		userId, password, password,"7567788766"};
+		String result =callPostService("http://prod.bizlem.io/portal/app/newaccount", paramKey, paramValue);
+		System.out.println("result "+result);
+
+		out.print("true");
+		}else {
+		out.print("false");
+		}
+		
 		session.save();
-	} catch (Exception e) {
+		} catch (Exception e) {
 		e.printStackTrace();
-	}
+		}
 }
 
 
