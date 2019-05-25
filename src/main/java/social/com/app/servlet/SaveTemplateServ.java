@@ -48,6 +48,7 @@ import org.apache.sling.commons.json.JSONObject;
 				"prodlist", "catalog", "viewcart", "productslist", "addcart", "createproduct", "checkmodelno",
 				"productEdit" }) })
 @SuppressWarnings("serial")
+//http://35.200.169.114:8082/portal/servlet/service/SaveTemplate
 public class SaveTemplateServ extends SlingAllMethodsServlet {
 	@Reference
 	private SlingRepository repo;	
