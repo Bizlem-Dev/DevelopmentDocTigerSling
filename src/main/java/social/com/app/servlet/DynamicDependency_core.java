@@ -63,120 +63,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		out.println("in DD");
-        try {
-        	session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
-        	BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
-			ByteArrayOutputStream buf = new ByteArrayOutputStream();
-			int result = bis.read();
-
-			while (result != -1) {
-				buf.write((byte) result);
-				result = bis.read();
-			}
-			String res = buf.toString("UTF-8");
-
-			JSONObject obj = new JSONObject(res);
-			JSONArray urljs = obj.getJSONArray("attachmenturl");
-
-			out.println("urljs.length()= " + urljs.length());
       
-			out.println("urljs.length()= " + urljs.length());
-			for (int i = 0; i < urljs.length(); i++) {
-				try {
-//
-					
-					String fileurl = urljs.getString(i);
-					out.println(" fileurl: " + fileurl);
-					String filename = "";
-					if (fileurl != null && fileurl != "") {
-						int o = fileurl.lastIndexOf("/");
-						filename = fileurl.substring(o + 1, fileurl.length());
-					
-						out.println(" filename: " + filename);
-					}
-				try {
-
-				String	urlStr = fileurl.replace(" ", "%20");
-					URL url;
-					InputStream ins = null;
-					StringBuilder requestString = new StringBuilder(urlStr);
-
-					try {
-						url = new URL(requestString.toString());
-//						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-						 HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
-						out.println(" filename: 1");
-//						conn.setRequestMethod("GET");
-//						conn.setRequestProperty("Accept", "application/text");
-						System.out.println("1");
-						ins = conn.getInputStream();
-						out.println(" filename:2 " + filename);
-				
-						
-						Node contentNode=null;
-						if (session.getRootNode().hasNode("content")) {
-							contentNode = session.getRootNode().getNode("content");
-						} else {
-							contentNode = session.getRootNode().addNode("content");
-						}
-						Node sf_object=null;
-						if(contentNode.hasNode("TemplateAttachmentFile")) {
-							sf_object=	contentNode.getNode("TemplateAttachmentFile");
-						}else {
-							sf_object=	contentNode.addNode("TemplateAttachmentFile");
-						}
-						String url1 ="";
-						//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/File/Document.docx
-						//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/Document.docx
-//						String url = request.getScheme() + "://" + request.getServerName() + ":"
-//								+ request.getServerPort() + request.getContextPath()
-//								+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
-//						Template.setProperty("TemplateUrl", url);
-	//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplateFile/TemplateTest.docx
-						Node subfileNode = null;
-						Node fileName=null;
-						Node jcrNode1 = null;
-						if (!sf_object.hasNode("File")) {
-							fileName = sf_object.addNode("File");
-							fileName.setProperty("file_url", url1);
-
-						} else {
-							fileName = sf_object.getNode("File");
-							fileName.setProperty("file_url", url1);
-							fileName.remove();
-							fileName = sf_object.addNode("File");
-							fileName.setProperty("file_url", url1);
-						}
-						// if (!fileName.hasNode(name)) {
-						subfileNode = fileName.addNode(filename, "nt:file");
-
-						jcrNode1 = subfileNode.addNode("jcr:content", "nt:resource");
-
-						jcrNode1.setProperty("jcr:data", ins);
-
-						jcrNode1.setProperty("jcr:mimeType", "attach");
-	}catch (Exception ex) {
-		// TODO: handle exception
-		out.println("ex :: "+ex);
-	}
-					
-					
-					out.println("files saved"+i);
-				}catch (Exception e) {
-					// TODO: handle exception
-					out.println("e :: "+e);
-				} finally {
-					
-				}
-				}catch (Exception e) {
-					// TODO: handle exception
-					out.println("e 1:: "+e);
-				}
-			}
-        	
-	        }catch (Exception e) {
-			// TODO: handle exception
-		}
 		
 	}
 	@Override
@@ -378,13 +265,13 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 									int o = fileurl.lastIndexOf("/");
 									String filename = fileurl.substring(o + 1, fileurl.length());
 									attjs.put(filename);
-									out.println("attjs - "+attjs);
+//									out.println("attjs - "+attjs);
 									}catch (Exception e) {
 										// TODO: handle exception
 									}
 								}
 //					attjs=separateComma(attachfilenames);
-					out.println("attachmentScorpio= " + attachurlarr);
+//					out.println("attachmentScorpio= " + attachurlarr);
 							}
 						}
 						
@@ -441,7 +328,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 							
 					if(attachurlarr.length()>0) {
 						sendobj.put("attachmentScorpio",attachurlarr);
-						out.println("saveattachmentserv= "+attachurlarr);
+//						out.println("saveattachmentserv= "+attachurlarr);
 					}
 					
 //					sendobj.put("to", maildata.get("to"));
