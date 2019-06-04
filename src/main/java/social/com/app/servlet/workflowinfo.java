@@ -62,6 +62,7 @@ public class workflowinfo extends SlingAllMethodsServlet {
 	@Override
 	protected void doPost(SlingHttpServletRequest req, SlingHttpServletResponse rep) throws IOException {
 		PrintWriter out = rep.getWriter();
+		String group="";
 		String approveremailId = "";
 		String approvrusername = "";
 		String Workflow_task_id = "";
@@ -89,6 +90,7 @@ public class workflowinfo extends SlingAllMethodsServlet {
 			}
 			String res = buf.toString("UTF-8");
 			JSONObject inputobj = new JSONObject(res);
+			group = inputobj.getString("group");
 			approveremailId = inputobj.getString("approverSFemailId");
 			approvrusername = inputobj.getString("approvSFusername");
 			wokusername = inputobj.getString("username");
@@ -112,7 +114,7 @@ public class workflowinfo extends SlingAllMethodsServlet {
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(approveremailId);
 			
-			DoctigerAdvanced =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  approveremailId, session, rep );
+			DoctigerAdvanced =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  approveremailId, group,session, rep );
 			if(DoctigerAdvanced!=null) {
 				
 			//to get emailnode====

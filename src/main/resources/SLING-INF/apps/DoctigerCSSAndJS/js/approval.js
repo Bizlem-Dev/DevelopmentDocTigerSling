@@ -4,7 +4,9 @@ if(document.getElementById("email").value=="anonymous"){
 }else{
 	var Email= document.getElementById("email").value;
 }
+var group=document.getElementById("working-group-Dropdown-id").value;
 
+alert("approvaljs group"+group)
 $( document ).ready(function() {
 	displaytaskslist();
 });
@@ -28,6 +30,8 @@ $("body").on("click", "#approvetaskid", function(){
    var taskid= tdobj.attr('task-id');
    
    jsonobj["TemplateName"]=TemplateName;
+   jsonobj["group"]=group;
+
 	jsonobj["Type"]=Type;
 	jsonobj["creator"]=creator;
 	jsonobj["approverSFemailId"]=approverSFemailIde;
@@ -69,6 +73,8 @@ $("body").on("click", "#rejecttaskid", function(){
    var approvSFusername= tdobj.attr('approvSFusername');
    var taskid= tdobj.attr('task-id');
    jsonobj["email"]=Email;
+   jsonobj["group"]=group;
+
    jsonobj["TemplateName"]=TemplateName;
 	jsonobj["Type"]=Type;
 	jsonobj["creator"]=creator;
@@ -97,7 +103,8 @@ $("body").on("click", "#rejecttaskid", function(){
   	alert("in display doc table")
   	//{"approverSFemailId":"doctiger@xyz.com","approvSFusername":"doctiger@xyz.com","username":"doctiger@xyz.com","password":"12345"}
   	var jsonobj={};
-  	jsonobj["approverSFemailId"]="doctiger@gmail.com";
+  	//jsonobj["approverSFemailId"]="doctiger@gmail.com";
+  	jsonobj["approverSFemailId"]="Email";
   	jsonobj["approvSFusername"]=Email;
   	jsonobj["username"]=Email;
   	jsonobj["password"]="12345";

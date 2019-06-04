@@ -70,8 +70,10 @@ public class SaveDynamicDocServ  extends SlingAllMethodsServlet {
 
 			JSONObject resultjsonobject = new JSONObject(res);
 			String email = "";
+			String group="";
 			String template = "";
 			email = resultjsonobject.getString("email").trim();
+			group = resultjsonobject.getString("group").trim();
 
 			template = resultjsonobject.getString("dynamicTemplatename").trim();
 			if (template.equals(null) || template.length() == 0) {				
@@ -91,7 +93,7 @@ public class SaveDynamicDocServ  extends SlingAllMethodsServlet {
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(email);
 				
-			Node 	DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, resp );
+			Node 	DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group,session, resp );
 				if(DocTigerAdvance!=null) {
 				
 

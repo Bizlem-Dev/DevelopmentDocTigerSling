@@ -58,6 +58,8 @@ public class EditParentClauseServ extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 			
 		String email=request.getParameter("email").replace("@", "_");
+		String group=request.getParameter("group");
+
 		JSONObject retobj= new JSONObject();		
 			try {
 				Session session = null;
@@ -111,7 +113,7 @@ public class EditParentClauseServ extends SlingAllMethodsServlet {
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(email1);
 				
-			 dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, response );
+			 dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, group,session, response );
 				if(dtaNode!=null) {
 
 				

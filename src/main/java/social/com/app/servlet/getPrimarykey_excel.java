@@ -48,6 +48,7 @@ public class getPrimarykey_excel extends SlingAllMethodsServlet {
 		PrintWriter out = rep.getWriter();
 		Session session = null;
        String email=null;
+       String group=null;
        //String eventName=null;
        //String EventId=null;
        //InputStream inputXls = null;
@@ -74,7 +75,8 @@ public class getPrimarykey_excel extends SlingAllMethodsServlet {
 		   JSONObject obj = new JSONObject(res);
 		  
 			email=obj.getString("email");
-			
+			group=obj.getString("group");
+
 			//email2=obj.getString("email").replace("@", "_");
 			
 			//email2=email.replace("@", "_");
@@ -86,7 +88,7 @@ public class getPrimarykey_excel extends SlingAllMethodsServlet {
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email);
 			
-		Node	doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, rep );
+		Node	doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group,session, rep );
 			if(doctiger!=null) {
 
 				if(doctiger.hasNode("Excel") ){

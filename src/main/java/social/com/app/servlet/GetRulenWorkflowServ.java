@@ -50,6 +50,8 @@ public class GetRulenWorkflowServ extends SlingAllMethodsServlet {
 				
 		String email=request.getParameter("Email").replace("@", "_");
 		//String SFEmail= request.getParameter("SFEmail"); 
+		//String group=request.getParameter("group");
+
 		
 		String js="";
 		

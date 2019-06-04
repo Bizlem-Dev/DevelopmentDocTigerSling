@@ -167,7 +167,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return CarrotruleMainNode;
 	}
 
-	public Node validationmethod(String freetrialstatus, String email, Session session1,
+	public Node validationmethod(String freetrialstatus, String email, String group, Session session1,
 			SlingHttpServletRequest request, SlingHttpServletResponse response) {
 
 		// PrintWriter out=null;
@@ -245,6 +245,298 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return serviceidOrFreetrialNode;
 
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//validationmethod change according to group start 03-06-19===========================
+	public Node validationmethod(String freetrialstatus, String email, String group, Session session1,
+			SlingHttpServletResponse response) {
+
+		// freetrialstatus="0";
+		PrintWriter out = null;
+		// out.println("in getDocTigerAdvNode");
+
+		Node contentNode = null;
+		Node appserviceNode = null;
+		Node appfreetrialNode = null;
+		Node emailNode = null;
+		Node DoctigerAdvNode = null;
+
+		Node adminserviceidNode = null;
+		String adminserviceid = "";
+		try {
+			out = response.getWriter();
+
+			// out.println("freetrialstatus "+freetrialstatus);
+			// out.println("email "+email);
+
+			// session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+			if (session1.getRootNode().hasNode("content")) {
+				contentNode = session1.getRootNode().getNode("content");
+			} else {
+				contentNode = session1.getRootNode().addNode("content");
+			}
+		// out.println("contentNode "+contentNode);
+
+			if (freetrialstatus.equalsIgnoreCase("0")) {
+
+				if (contentNode.hasNode("services")) {
+					appserviceNode = contentNode.getNode("services");
+
+					// out.println("appserviceNode "+appserviceNode);
+
+					if (appserviceNode.hasNode("freetrial")) {
+						appfreetrialNode = appserviceNode.getNode("freetrial");
+
+						//out.println("appfreetrialNode "+appfreetrialNode);
+
+						if (appfreetrialNode.hasNode("users")
+								&& appfreetrialNode.getNode("users").hasNode(email.replace("@", "_"))) {
+							emailNode = appfreetrialNode.getNode("users").getNode(email.replace("@", "_"));
+							// out.println("emailNode "+emailNode);
+							if (emailNode.hasNode("DocTigerAdvanced")) {
+								DoctigerAdvNode = emailNode.getNode("DocTigerAdvanced");
+							} else {
+								DoctigerAdvNode = emailNode.addNode("DocTigerAdvanced");
+							}
+							 //out.println("DoctigerAdvNode "+DoctigerAdvNode);
+
+						} else {
+							// emailNode=appfreetrialNode.getNode("users").addNode(email.replace("@", "_"));
+						}
+					} else {
+						// appfreetrialNode=appserviceNode.addNode("freetrial");
+					}
+				} else {
+					// appserviceNode=contentNode.addNode("services");
+				}
+
+			} else {
+
+			// out.println("in else");
+
+				if (contentNode.hasNode("user") && contentNode.getNode("user").hasNode(email.replace("@", "_"))) {
+					emailNode = contentNode.getNode("user").getNode(email.replace("@", "_"));
+					if (emailNode.hasNode("services") && emailNode.getNode("services").hasNode("doctiger")
+							&& emailNode.getNode("services").getNode("doctiger").hasNodes()) {
+						NodeIterator itr = emailNode.getNode("services").getNode("doctiger").getNodes();
+						while (itr.hasNext()) {
+							adminserviceid = itr.nextNode().getName();
+							if(!adminserviceid.equalsIgnoreCase("DocTigerFreeTrial")) {
+								break;
+							}
+						}
+					}
+				}
+				//out.println("adminserviceid "+adminserviceid);
+				if ((adminserviceid != "") && (!adminserviceid.equals("DocTigerFreeTrial"))) {
+
+					if (contentNode.hasNode("services")) {
+						appserviceNode = contentNode.getNode("services");
+					} else {
+						appserviceNode = contentNode.addNode("services");
+					}
+					//out.println("appserviceNode "+appserviceNode);
+
+					if (appserviceNode.hasNode(adminserviceid)) {
+						appfreetrialNode = appserviceNode.getNode(adminserviceid);
+					} else {
+						appfreetrialNode = appserviceNode.addNode(adminserviceid);
+					}
+					
+					String quantity="";
+					String Document_count_Id="0";
+					String end_date="";
+					boolean validity=false;
+					
+					if(appfreetrialNode.hasNode("quantity")) {
+						quantity=appfreetrialNode.getProperty("quantity").getString();
+						if(appfreetrialNode.hasProperty("Document_count_Id")) {
+						Document_count_Id=appfreetrialNode.getProperty("Document_count_Id").getString();
+						
+						int qty=Integer.parseInt(quantity);
+						int dcount=Integer.parseInt(Document_count_Id);
+						if(qty>dcount) {
+							validity=true;
+						if(appfreetrialNode.hasProperty("end_date")) {
+						 end_date=appfreetrialNode.getProperty("end_date").getString();
+						String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+							Date currentdateobj = new SimpleDateFormat("yyyy-MM-dd").parse(currentDate);
+							Date enddateobj = new SimpleDateFormat("yyyy-MM-dd").parse(end_date);
+							if (enddateobj.before(currentdateobj)) {
+								validity = false;
+							}
+						}	else {
+							validity=true;
+						}
+						}else {
+							validity = false;
+						}
+						}
+					}else if(appfreetrialNode.hasProperty("end_date")) {
+						 end_date=appfreetrialNode.getProperty("end_date").getString();
+						String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+							Date currentdateobj = new SimpleDateFormat("yyyy-MM-dd").parse(currentDate);
+							Date enddateobj = new SimpleDateFormat("yyyy-MM-dd").parse(end_date);
+							if (enddateobj.before(currentdateobj)) {
+								validity = false;
+							}
+						}	else {
+							validity=true;
+						}
+					
+					if(validity) {
+					if (appfreetrialNode.hasNode(group)) {
+						emailNode = appfreetrialNode.getNode(group);
+					} else {
+						emailNode = appfreetrialNode.addNode(group);
+					}
+	              //out.println("emailNode "+emailNode);
+					if (emailNode.hasNode("DocTigerAdvanced")) {
+						DoctigerAdvNode = emailNode.getNode("DocTigerAdvanced");
+					} else {
+						DoctigerAdvNode = emailNode.addNode("DocTigerAdvanced");
+					}
+					
+					
+				}else {DoctigerAdvNode=null;}
+				}
+			}
+
+			// session.save();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		//out.println(e.getMessage());
+			DoctigerAdvNode=null;
+		}
+
+		return DoctigerAdvNode;
+	}
+	//validationmethod change according to group end===========================
+		
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//getDoctigerAdvancedNode change according to group start 28-05-19===========================
+
+public Node getDocTigerAdvNode(String freetrialstatus, String email, String group, Session session1,
+		SlingHttpServletResponse response) {
+
+	// freetrialstatus="0";
+	PrintWriter out = null;
+	// out.println("in getDocTigerAdvNode");
+
+	Node contentNode = null;
+	Node appserviceNode = null;
+	Node appfreetrialNode = null;
+	Node emailNode = null;
+	Node DoctigerAdvNode = null;
+
+	Node adminserviceidNode = null;
+	String adminserviceid = "";
+	try {
+		out = response.getWriter();
+
+		// out.println("freetrialstatus "+freetrialstatus);
+		// out.println("email "+email);
+
+		// session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
+		if (session1.getRootNode().hasNode("content")) {
+			contentNode = session1.getRootNode().getNode("content");
+		} else {
+			contentNode = session1.getRootNode().addNode("content");
+		}
+	// out.println("contentNode "+contentNode);
+
+		if (freetrialstatus.equalsIgnoreCase("0")) {
+
+			if (contentNode.hasNode("services")) {
+				appserviceNode = contentNode.getNode("services");
+
+				// out.println("appserviceNode "+appserviceNode);
+
+				if (appserviceNode.hasNode("freetrial")) {
+					appfreetrialNode = appserviceNode.getNode("freetrial");
+
+					//out.println("appfreetrialNode "+appfreetrialNode);
+
+					if (appfreetrialNode.hasNode("users")
+							&& appfreetrialNode.getNode("users").hasNode(email.replace("@", "_"))) {
+						emailNode = appfreetrialNode.getNode("users").getNode(email.replace("@", "_"));
+						// out.println("emailNode "+emailNode);
+						if (emailNode.hasNode("DocTigerAdvanced")) {
+							DoctigerAdvNode = emailNode.getNode("DocTigerAdvanced");
+						} else {
+							DoctigerAdvNode = emailNode.addNode("DocTigerAdvanced");
+						}
+						 //out.println("DoctigerAdvNode "+DoctigerAdvNode);
+
+					} else {
+						// emailNode=appfreetrialNode.getNode("users").addNode(email.replace("@", "_"));
+					}
+				} else {
+					// appfreetrialNode=appserviceNode.addNode("freetrial");
+				}
+			} else {
+				// appserviceNode=contentNode.addNode("services");
+			}
+
+		} else {
+
+		// out.println("in else");
+
+			if (contentNode.hasNode("user") && contentNode.getNode("user").hasNode(email.replace("@", "_"))) {
+				emailNode = contentNode.getNode("user").getNode(email.replace("@", "_"));
+				if (emailNode.hasNode("services") && emailNode.getNode("services").hasNode("doctiger")
+						&& emailNode.getNode("services").getNode("doctiger").hasNodes()) {
+					NodeIterator itr = emailNode.getNode("services").getNode("doctiger").getNodes();
+					while (itr.hasNext()) {
+						adminserviceid = itr.nextNode().getName();
+						if(!adminserviceid.equalsIgnoreCase("DocTigerFreeTrial")) {
+							break;
+						}
+					}
+				}
+			}
+			//out.println("adminserviceid "+adminserviceid);
+			if ((adminserviceid != "") && (!adminserviceid.equals("DocTigerFreeTrial"))) {
+
+				if (contentNode.hasNode("services")) {
+					appserviceNode = contentNode.getNode("services");
+				} else {
+					appserviceNode = contentNode.addNode("services");
+				}
+				//out.println("appserviceNode "+appserviceNode);
+
+				if (appserviceNode.hasNode(adminserviceid)) {
+					appfreetrialNode = appserviceNode.getNode(adminserviceid);
+				} else {
+					appfreetrialNode = appserviceNode.addNode(adminserviceid);
+				}
+				if (appfreetrialNode.hasNode(group)) {
+					emailNode = appfreetrialNode.getNode(group);
+				} else {
+					emailNode = appfreetrialNode.addNode(group);
+				}
+              //out.println("emailNode "+emailNode);
+				if (emailNode.hasNode("DocTigerAdvanced")) {
+					DoctigerAdvNode = emailNode.getNode("DocTigerAdvanced");
+				} else {
+					DoctigerAdvNode = emailNode.addNode("DocTigerAdvanced");
+				}
+			}
+		}
+
+		// session.save();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+	//out.println(e.getMessage());
+		DoctigerAdvNode=null;
+	}
+
+	return DoctigerAdvNode;
+}
+//getDoctigerAdvancedNode change according to group end===========================
+	
+	
+	
 
 	public Node getDocTigerAdvNode(String freetrialstatus, String email, Session session1,
 			SlingHttpServletResponse response) {
@@ -360,7 +652,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return DoctigerAdvNode;
 	}
 
-	public String getEventdata(String email, String eventId, String eventName, SlingHttpServletResponse response) {
+	public String getEventdata(String email,String group, String eventId, String eventName, SlingHttpServletResponse response) {
 		PrintWriter out = null;
 		// Node emailnode=null;
 		// Node Eventnode=null;
@@ -399,7 +691,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(usrid);
 			// out.println("freetrialstatus: "+freetrialstatus);
-			dtaNode = getDocTigerAdvNode(freetrialstatus, usrid, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, usrid, group,session, response);
 			// out.println("dtaNode: "+dtaNode);
 			if (dtaNode != null) {
 				if (dtaNode.hasNode("Communication")) {
@@ -472,7 +764,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public JSONObject getTempSFObj(String email, String tempname, SlingHttpServletResponse response) {
+	public JSONObject getTempSFObj(String email, String group, String tempname, SlingHttpServletResponse response) {
 
 		PrintWriter out = null;
 		Node tempnode = null;
@@ -489,7 +781,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			dtaNode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, email, group,session, response);
 			if (dtaNode != null) {
 
 				if (dtaNode.hasNode("TemplateLibrary") && dtaNode.getNode("TemplateLibrary").hasNode(tempname)) {
@@ -517,7 +809,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public String getADVandTemplatedata(String email, String templatename, String AttachtempalteType, String SFObject,
+	public String getADVandTemplatedata(String email, String group,String templatename, String AttachtempalteType, String SFObject,
 			String Primery_key, String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response) {
 		PrintWriter out = null;
 		String templatename_url = null;
@@ -540,12 +832,12 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			Doctigernode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			Doctigernode = getDocTigerAdvNode(freetrialstatus, email, group,session, response);
 			if (Doctigernode != null) {
 
 				if (AttachtempalteType.equals("TemplateLibrary")) {
 					temptoparse = templatename;
-					sfobj = getTempSFObj(email, templatename, response);
+					sfobj = getTempSFObj(email, group,templatename, response);
 					templatenode = (Node) sfobj.get("tempnode");
 //					 out.println("sfobj * "+sfobj);
 //					 out.println("templatenode * "+templatenode);
@@ -557,7 +849,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 						if (Avdancedtempnode.getProperty("static").getString().equals("true")) {
 							String Tempname = Avdancedtempnode.getProperty("selectedTemplate").getString();
 							temptoparse = Tempname;
-							sfobj = getTempSFObj(email, Tempname, response);
+							sfobj = getTempSFObj(email, group,Tempname, response);
 							templatenode = (Node) sfobj.get("tempnode");
 							// out.println("sfobj ** "+sfobj);
 
@@ -654,7 +946,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 								temptoparse = ruleoutput.getString("template_name");
 								// out.println("temptoparse *** @@ "+temptoparse);
 
-								sfobj = getTempSFObj(email, temptoparse, response);
+								sfobj = getTempSFObj(email, group,temptoparse, response);
 								templatenode = (Node) sfobj.get("tempnode");
 								// out.println("sfobj **@@ "+sfobj);
 
@@ -710,7 +1002,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 						// out.print("count "+count);
 						// String rsl= getFileReplaceData(email, clauseid, clausename, response,
 						// SFData.toString());
-						String rsl = getFileReplaceData_new(email, clauseid, clausename, response, SFData.toString(),
+						String rsl = getFileReplaceData_new(email,group, clauseid, clausename, response, SFData.toString(),
 								count);
 
 						JSONObject langobj = new JSONObject(rsl);
@@ -833,7 +1125,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public JSONObject getMailTemplatedata(String email, String mailtemplatename, String SFObject, String Primery_key,
+	public JSONObject getMailTemplatedata(String email, String group, String mailtemplatename, String SFObject, String Primery_key,
 			String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response) {
 		PrintWriter out = null;
 		JSONObject mailbody = null;
@@ -856,7 +1148,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			dtaNode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, email, group,session, response);
 			if (dtaNode != null) {
 
 				if (dtaNode.hasNode("Communication") && dtaNode.getNode("Communication").hasNode("MailTemplate")
@@ -926,7 +1218,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return mailbody;
 	}
 
-	public JSONObject getSMSTemplatedata(String email, String SMStemplatename, String SFObject, String Primery_key,
+	public JSONObject getSMSTemplatedata(String email,String group, String SMStemplatename, String SFObject, String Primery_key,
 			String Primery_key_value, JSONObject SFData, SlingHttpServletResponse response) {
 		PrintWriter out = null;
 		JSONObject SMSbody = null;
@@ -949,7 +1241,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			dtaNode = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			dtaNode = getDocTigerAdvNode(freetrialstatus, email,group, session, response);
 			if (dtaNode != null) {
 
 				if (dtaNode.hasNode("SMSTemplate") && dtaNode.getNode("SMSTemplate").hasNode(SMStemplatename)) {
@@ -1001,7 +1293,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public String getFileReplaceData(String email, String clauseid, String clausename,
+	public String getFileReplaceData(String email,String group, String clauseid, String clausename,
 			SlingHttpServletResponse response, String SFresp) {
 		String resp = "";
 		PrintWriter out = null;
@@ -1039,7 +1331,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			DocTigerAdvance = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			DocTigerAdvance = getDocTigerAdvNode(freetrialstatus, email, group,session, response);
 			if (DocTigerAdvance != null) {
 
 				// out.println("emailnode "+emailnode);
@@ -1315,7 +1607,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return resp;
 	}
 
-	public String getClauseByName(String searchText, String email, Node DoctigerAdvnode,
+	public String getClauseByName(String searchText, String email, String group,Node DoctigerAdvnode,
 			SlingHttpServletResponse response) {
 		PrintWriter out = null;
 		String clauseid = "";
@@ -1350,7 +1642,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public String getFileReplaceData_new(String email, String clauseid, String clausename,
+	public String getFileReplaceData_new(String email,String group, String clauseid, String clausename,
 			SlingHttpServletResponse response, String SFresp, int count) {
 		JSONObject twoclausejson = new JSONObject();
 		JSONObject rtnobj = new JSONObject();
@@ -1375,7 +1667,7 @@ public class ParseSlingDataImpl implements ParseSlingData {
 			FreeTrialandCart cart = new FreeTrialandCart();
 			String freetrialstatus = cart.checkfreetrial(email);
 
-			DocTigerAdvance = getDocTigerAdvNode(freetrialstatus, email, session, response);
+			DocTigerAdvance = getDocTigerAdvNode(freetrialstatus, email,group, session, response);
 			if (DocTigerAdvance != null) {
 
 				if (DocTigerAdvance.hasNode("Clauses")) {
@@ -1939,20 +2231,54 @@ public class ParseSlingDataImpl implements ParseSlingData {
 		return null;
 	}
 
-	public String updateDocGenCounter(String useremail, Node update_node, SlingHttpServletResponse response) {
-		Node adminNode = null;
+	
+	public String updateDocGenCounter(String useremail,String freetrialstatus, Node doctigerAdvNode, SlingHttpServletResponse response) {
 		Node serviceIdNode = null;
+		Node  GroupNode=null;
+		Node useremailNode=null;
 		try {
-			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
-
-			String count = update_node.getProperty("doccount").getString();
-			int countint = Integer.parseInt(count);
-			countint++;
-			update_node.setProperty("doccount", countint);
+			if(freetrialstatus.equalsIgnoreCase("1")) {
+			//increment count on groupnode 
+			GroupNode=doctigerAdvNode.getParent();
+			if(GroupNode.hasProperty("Document_count_group")){
+				int count=Integer.parseInt(GroupNode.getProperty("Document_count_group").getString())+1;
+				GroupNode.setProperty("Document_count_group", count+"");
+			}else {
+				int count =0;
+				GroupNode.setProperty("Document_count_group", count+"");
+			}
+			
+			//increment count on useremail
+			if(GroupNode.hasNode("users") && GroupNode.getNode("users").hasNode(useremail.replace("@", "_"))) {
+				useremailNode=GroupNode.getNode("users").getNode(useremail.replace("@", "_"));
+				
+				if(useremailNode.hasProperty("Document_count_user")) {
+					int count=Integer.parseInt(useremailNode.getProperty("Document_count_user").getString())+1;
+					useremailNode.setProperty("Document_count_user", count+"");
+				}else {
+					int count =0;
+					useremailNode.setProperty("Document_count_user", count+"");
+				}
+			}
+			
+			//increment count on serviceid 
+			serviceIdNode=GroupNode.getParent();
+			if(serviceIdNode.hasProperty("Document_count_Id")) {
+				int count=Integer.parseInt(serviceIdNode.getProperty("Document_count_Id").getString())+1;
+				serviceIdNode.setProperty("Document_count_int", count+"");
+			}else{
+				int count =0;
+				serviceIdNode.setProperty("Document_count_Id", count+"");
+			}
+			
+			
+			
+			}
 			return "true";
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			return "false";
 		}
 	}
@@ -2044,9 +2370,9 @@ public class ParseSlingDataImpl implements ParseSlingData {
 
 	}
 
-	public JSONObject updateDocGenCounter(String useremail, JSONObject email, SlingHttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+	
+
+
 
 }

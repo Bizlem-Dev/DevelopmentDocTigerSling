@@ -72,6 +72,7 @@ public class getHeadersFromExcel extends SlingAllMethodsServlet {
 		  
 			email=obj.getString("email").replace("@", "_");
 			String email1=obj.getString("email");
+			String group=obj.getString("group");
 
 			
 			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
@@ -82,12 +83,14 @@ public class getHeadersFromExcel extends SlingAllMethodsServlet {
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(email1);
 				
-			Node	doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, rep );
-				if(doctiger!=null) {
+			Node	doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1,group, session, rep );
+		//	out.println("doctiger  "+doctiger);
+
+			if(doctiger!=null) {
 
 				if( doctiger.hasNode("Excel") ){
 					ExcelNode=doctiger.getNode("Excel") ;
-					//out.println("ExcelNode  "+ExcelNode);
+				//	out.println("ExcelNode  "+ExcelNode);
 					lastcount=	ExcelNode.getProperty("last_count").getLong();
 					//out.println("lastcount  "+lastcount);
 					String count=Integer.toString((int) (lastcount-1));
@@ -99,19 +102,19 @@ public class getHeadersFromExcel extends SlingAllMethodsServlet {
 						ReadHeader_Excel rm = new ReadHeader_Excel();
 						
 						JSONArray resultjsonstring = rm.getJsondatabypk( email,  filepath);
-					//out.print(resultjsonstring);
+				//	out.print("resultjsonstring "+resultjsonstring);
 					resultjson.put("status", "success");
 					resultjson.put("Headers", resultjsonstring);
-					out.print(resultjson.toString());
+					out.println(resultjson.toString());
 					}else {
 						resultjson.put("status", "error");
 						resultjson.put("message", "Excel Not found");
-						out.print(resultjson.toString());
+						out.println(resultjson.toString());
 					}
 				}else {					
 					resultjson.put("status", "error");
 					resultjson.put("message", "Excel Not found");
-					out.print(resultjson.toString());
+					out.println(resultjson.toString());
 				}
 			}else {
 				resultjson.put("status", "error");

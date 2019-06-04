@@ -49,7 +49,7 @@ public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 	Session session = null;
 	ResourceBundle bundle = ResourceBundle.getBundle("config");
 	static ResourceBundle bundleststic = ResourceBundle.getBundle("config");
-//	ParseSlingData_comment parseSlingData = new ParseSlingDataImpl_comment();
+	//ParseSlingData_comment parseSlingData = new ParseSlingDataImpl_comment();
 	ParseSlingData parseSlingData= new ParseSlingDataImpl();
 	@Override
 	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
@@ -81,6 +81,8 @@ public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 			out.println("res: " + res);
 			JSONObject resultobj = new JSONObject(res);
 			String email = resultobj.getString("Email").replace("@", "_");
+			String group = resultobj.getString("group");
+
 			String EventId = resultobj.getString("EventId");
 			String EventName = resultobj.getString("EventName");
 			String SFObject = resultobj.getString("SFObject");
@@ -118,7 +120,7 @@ public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 			// ==============================================================================================================================
 
 			 out.println("before eventdata"+email+EventId+EventName+rep);
-			String result = parseSlingData.getEventdata(email, EventId, EventName, rep);//,session
+			String result = parseSlingData.getEventdata(email, group,EventId, EventName, rep);//,session
 			out.println("event result1 ::" + result);
 			JSONArray arr = new JSONArray(result);
 			JSONObject CTrecord = null;
@@ -134,7 +136,7 @@ public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 					String AttachtempalteType = CTrecord.getString("AttachedTempType");
 					out.println(AttachtempalteType);
 
-					docurl = parseSlingData.getADVandTemplatedata(email, Templatename, AttachtempalteType, SFObject,
+					docurl = parseSlingData.getADVandTemplatedata(email, group,Templatename, AttachtempalteType, SFObject,
 							Primery_key, Primery_key_value, SFData, rep);//,session
 					// String docurl="";
 					out.println(docurl);
@@ -145,7 +147,7 @@ public class DynamicDependency_core_comment12 extends SlingAllMethodsServlet {
 					// call method to get template info
 					// out.println("MailTemplate " + MailTemplate);
 
-					JSONObject maildata = parseSlingData.getMailTemplatedata(email, MailTemplate, SFObject, Primery_key,
+					JSONObject maildata = parseSlingData.getMailTemplatedata(email, group,MailTemplate, SFObject, Primery_key,
 							Primery_key_value, SFData, rep); //,session
 					out.println("SFData= " + SFData);
 					out.println("maildata " + maildata);

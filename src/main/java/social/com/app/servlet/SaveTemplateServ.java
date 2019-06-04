@@ -89,12 +89,14 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 			String template = "";
 			String email = "";
 			String SFEmail = "";
+			String group="";
 			email = resultjsonobject.getString("email").trim();
+			group = resultjsonobject.getString("group").trim();
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email);
 			
-			Node DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, response );
+			Node DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group,session, response );
 			if(DocTigerAdvance!=null) {
 				template = resultjsonobject.getString("templatename").trim();
 				if (request.getRequestPathInfo().getExtension().equals("Basic")) {
@@ -578,9 +580,14 @@ public class SaveTemplateServ extends SlingAllMethodsServlet {
 										
 										//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/File/Document.docx
 										//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/Temptest20/TemplateFile/Document.docx
+//										String url = request.getScheme() + "://" + request.getServerName() + ":"
+//												+ request.getServerPort() + request.getContextPath()
+//												+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
+										
 										String url = request.getScheme() + "://" + request.getServerName() + ":"
 												+ request.getServerPort() + request.getContextPath()
-												+ "/content/services/freetrial/users/" + email.replace("@", "_") + "/" + "DocTigerAdvanced/"+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
+												+ DocTigerAdvance.getName()+"TemplateLibrary/"+template+"/TemplateFile" + "/File/"  + filename;
+										
 										Template.setProperty("TemplateUrl", url);
 					//http://35.200.169.114:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/TemplateLibrary/TemplateFile/TemplateTest.docx
 										Node subfileNode = null;

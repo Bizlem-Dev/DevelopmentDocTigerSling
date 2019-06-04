@@ -84,7 +84,10 @@ public class SaveSMSTemplateServlet1 extends SlingAllMethodsServlet {
 			JSONObject resultjsonobject = new JSONObject(res);
 			String template = "";
 			String email = "";
+			String group="";
 			email = resultjsonobject.getString("email").trim();
+			group = resultjsonobject.getString("group").trim();
+
 			template = resultjsonobject.getString("smstemplatename").trim();
 			if (email.equals(null) || email.length() == 0) {
 				js.put("status", "error");
@@ -97,7 +100,7 @@ public class SaveSMSTemplateServlet1 extends SlingAllMethodsServlet {
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email);
 			
-			Node DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, response );
+			Node DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group,session, response );
 			if(DocTigerAdvance!=null) {
 		
 			Node tempn = null;

@@ -83,11 +83,12 @@ public class AddWFApproverServ  extends SlingAllMethodsServlet {
 			JSONObject obj = new JSONObject(res);
 
 			email= obj.getString("Email").replace("@", "_");
-			String email1=email= obj.getString("Email");
+			String email1= obj.getString("Email");
+			String group=obj.getString("group");
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email1);
 			out.println("freetrialstatus "+freetrialstatus);
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, rep );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1,group, session, rep );
 			out.println("DocTigerAdvance "+dtaNode);
 			if(dtaNode!=null) {
 				if(dtaNode.hasNode("WorkflowApprovers")){

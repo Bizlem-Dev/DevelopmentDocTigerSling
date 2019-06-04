@@ -56,6 +56,8 @@ public class GetClauseByNameServ extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 			
 		String email=request.getParameter("email").replace("@", "_");
+		String group=request.getParameter("group");
+
 		JSONObject retobj= new JSONObject();
 		
 			try {
@@ -71,7 +73,7 @@ public class GetClauseByNameServ extends SlingAllMethodsServlet {
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(email);
 				
-				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, response );
+				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group,session, response );
 				if(dtaNode!=null) {
 				
 				if(dtaNode.hasNode("Clauses")){

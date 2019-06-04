@@ -52,13 +52,15 @@ public class EditAdvancedTemplates  extends SlingAllMethodsServlet {
 			session = repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
 
 			String email = req.getParameter("email");
+			String group = req.getParameter("group");
+
 
 			String template = req.getParameter("template");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email);
 
-			DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, resp);
+			DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, group, session, resp);
 			if(DocTigerAdvance!=null) {
 				Node advtemp = null;
 				if (DocTigerAdvance.hasNode("AdvancedTemplate")) {

@@ -5,13 +5,26 @@ if(document.getElementById("email").value=="anonymous"){
 }else{
 	var Email= document.getElementById("email").value;
 }
+
+
+var group=" ";
 var SFEmail= document.getElementById("email").value;
 var ip="http://prod.bizlem.io";
 	//"http://35.200.169.114";
 var port="8082";
 
 console.log(Email);
+//28-05-19------------------------------------
 $(document).ready(function() {
+	//alert("working-group-Dropdown ");
+	selectworkingroupfun("working-group-Dropdown");
+	
+	// group=document.getElementById("working-group-Dropdown-id").value;
+
+	
+	//alert("group in ready *"+group+"*");
+	
+	
 	getClauseTable();
 	getTemplateTable();
 	getMailTempTable();
@@ -21,12 +34,117 @@ $(document).ready(function() {
 	console.log(document.getElementById("RuleData").value);
 
 	$('.temp-name').attr('id','mailName');	
+	
+	
+	
+	if($('.upload_file').is(':checked')){
+		$('.upload-file-main').css('display','block');
+	}
+	if($('.static-dynamic-doc').is(':checked')){
+		// call list of temlate to select in Dynamic Document
+		//Pallavi  ===============================================
+		 // getTempforDoc();
+		 //==================================================== 
+		$('.select-temp-dynamic-doc-main').css('display','block');
+	}
+	if($('.upload_file_parent_cls_lib').is(':checked')){
+		$('.upload-file-main-parnt-cls-lib').css('display','block');
+	}
+	
+
+	//pallavi================
+	//alert("in document.ready")
+	addeventcomm("selectevent-comm");
+	  addattachtemplatecomm("attach-temp-comm");
+	 addmailtemplatecomm("select-mail-tmp");
+	  addSMStemplatecomm("select-sms-tmp");
+
+
+		//alert("end set attachtemp")
+
+	  
+	//====================
+		
+		//pallavi workflowapprovers=====
+	document.getElementById("WorkflowApproverType").value="new"
+	addApproverDropDown("listofapprovers", "selectwkapprover");
+	//=================================
+		
+		//pallavi==============
+		dislayDocTable();
+		//=================
+	if($('.upload_file1').is(':checked')){
+		$('.upload-file-main1').css('display','block');
+	}
+	if($('.static-dynamic-doc').is(':checked')){
+		// call list of temlate to select in Dynamic Document
+		//Pallavi  ===============================================
+		  getTempforDoc();
+		 //==================================================== 
+		$('.select-temp-dynamic-doc-main').css('display','block');
+	}
+	if($('.upload_file_parent_cls_lib').is(':checked')){
+		$('.upload-file-main-parnt-cls-lib').css('display','block');
+	}
+});
+console.log("group *"+group+"*");
+
+
+
+$("body").on("change","#working-group-Dropdown-id",function(){
+	 group=$(this).val();
+	 console.log("group in on change *"+group+"*");
+});
+//----------------------------------------------
+function selectworkingroupfun(selectclass){
+	//alert("in selectworkingroupfun");
+	// if there is no event it is giving error messahe handle tha and show only create new event option
+	$.ajax({ 
+	type: 'GET',
+	url: 'http://prod.bizlem.io:8082/portal/process/shoppingcart/service_sampletests?email='+Email,
+	async:false,
+	success: function (dataa) {
+	console.log(dataa);
+	var json = JSON.parse(dataa);
+	var x = document.getElementsByClassName(selectclass);
+	//alert("x.length" +x.length);
+	
+	for(var i=0; i<x.length; i++){
+	//alert("in for "+i);
+	x[i].innerHTML="";
+	//x[i].options[x[i].options.length] = new Option("--Select Event--", "--Select Event--");
+	//x[i].options[x[i].options.length] = new Option("Create New Event", "eventnew");
+	if(json.length>0){
+	for(var j=0; j<json.length; j++){
+	var key =json[j];
+	x[i].options[x[i].options.length] = new Option(key, key);
+	//x[i].options.add( new Option(key,value) );
+	}}else{
+		x[i].options[x[i].options.length] = new Option("No Group", "No Group");
+	}
+
+	}
+	group =document.getElementById("working-group-Dropdown-id").value;
+	//alert("group inside "+group);
+
+	}
+	});
+	}
+
+//=================================================
+
+//alert("group outside "+group);
+//alert("group outside 2 "+document.getElementById("working-group-Dropdown-id").value);
+
+
+$(document).ready(function() {
+	
 });
 
 function getClauseTable(){	
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/DTANewGetClauseList?email='+Email,
+		url:'/portal/servlet/service/DTANewGetClauseList?email='+Email+'&group='+group,
 		async:true,
 		success:function(dataa){
 			try{
@@ -146,7 +264,7 @@ $("body").on("click",".btn-success",function(){
 function getTemplateTable(){
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/TemplateList?email='+Email,
+		url:'/portal/servlet/service/TemplateList?email='+Email+'&group='+group,
 		async: true,
 		success:function(dataa){
 			var json=JSON.parse(dataa);
@@ -193,7 +311,7 @@ function getTemplateTable(){
 function getMailTempTable(){
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/getMailTemplateList?email='+Email,
+		url:'/portal/servlet/service/getMailTemplateList?email='+Email+'&group='+group,
 		async: true,
 		success:function(dataa){
 			try{
@@ -763,6 +881,7 @@ $('.clause-library-save-next').click(function saveClause(){
 		mainJson["ClauseId"]=document.getElementById("ParentClauseId").value;
 	}
 	mainJson["Email"]=Email;
+	mainJson["group"]=group;
 	mainJson["UserName"]=UserName;
 	mainJson["ClauseName"]=ClauseName;
 	mainJson["Metadata"]=MetaData;
@@ -914,7 +1033,7 @@ $("body").on("change","#selectEvent-communication",function(){
 	console.log('url  portal/servlet/service/EditEventList?email='+Email+'&eventId='+eventid+'&eventName='+eventname);
 	 $.ajax({
 		   type: 'GET',
-		   url: '/portal/servlet/service/EditEventList?email='+Email+'&eventId='+eventid+'&eventName='+eventname,
+		   url: '/portal/servlet/service/EditEventList?email='+Email+'&eventId='+eventid+'&eventName='+eventname+'&group='+group,
 		   async: true,
 		   success: function (dataa) {
 		    console.log(dataa);
@@ -1077,6 +1196,7 @@ $('.template-library-save-next').click(function(){
 	var Description=document.getElementById("tempDes").value;
 	var savetype= document.getElementById("tempSaveType").value;
 	tempmainJson["email"]=Email;
+	tempmainJson["group"]=group;
 	tempmainJson["username"]=UserName;
 	tempmainJson["templatename"]=templatename;
 	tempmainJson["metadata"]=MetaData;
@@ -1156,12 +1276,14 @@ function saveTemp(templatename, tempName, url){
 	var Description=document.getElementById("mailTempDes").value;
 	var savetype=document.getElementById("mailtempSaveType").value;
 	mailJson["email"]=Email;
+	mailJson["group"]=group;
 	mailJson["SFEmail"]=SFEmail;
 	mailJson[templatename]=tempName;
 	mailJson["Metadata"]=MetaData;
 	mailJson["ExternalParam"]=ExternalParam;
 	mailJson["Description"]=Description;
 	mailJson["saveType"]=savetype;
+
 	//alert(JSON.stringify(mailJson));
 	console.log(JSON.stringify(mailJson));
 	$.ajax({
@@ -1240,6 +1362,7 @@ $('.cls-lib-sfdc-save-next').click(function(){
 	var pri_key=JSON.parse(document.getElementById("Pri_Key").value);
 	console.log(sfobj);
 	sfmainJson["Email"]=Email;
+		sfmainJson["group"]=group;
 	sfmainJson["SFEmail"]=SFEmail;
 	sfmainJson["savetype"]=savetype;
 	sfmainJson["UserName"]=UserName;
@@ -1286,6 +1409,7 @@ $('.cls-lib-external-para-save-next').click(function(){
 	var type="";
 	var primerykey="";
 	exmainJson["Email"]=Email;
+	exmainJson["group"]=group;
 	exmainJson["SFEmail"]=SFEmail;
 	exmainJson["savetype"]=savetype;
 	exmainJson["ClauseId"]=ClauseId;
@@ -1428,6 +1552,7 @@ $('.compose-clause-save-btn').click(function(){
 	console.log(Ruledata);
 	var Controller=document.getElementById("Con").value;
 	composeJson["Email"]=Email;
+	composeJson["group"]=group;
 	composeJson["savetype"]=savetype;
 	composeJson["ClauseId"]=ClauseId;
 	composeJson["ClauseName"]=ClauseName;
@@ -1511,6 +1636,7 @@ $('.child-clause-save-btn').click(function(){
 	if(savetype=="edit"){
 		saveChildJson["ClauseId"]=document.getElementById("chClauseId").value;
 		saveChildJson["Email"]=Email;
+		saveChildJson["group"]=group;
 		saveChildJson["SFEmail"]=SFEmail;
 		saveChildJson["savetype"]=savetype;
 		saveChildJson["ParentClauseId"]=ParentClauseId;
@@ -1523,6 +1649,7 @@ $('.child-clause-save-btn').click(function(){
 		console.log(JSON.stringify(saveChildJson));
 	}else if(savetype=="new"){
 		saveChildJson["Email"]=Email;
+		saveChildJson["group"]=group;
 		saveChildJson["SFEmail"]=SFEmail;
 		saveChildJson["savetype"]=savetype;
 		saveChildJson["ParentClauseId"]=ParentClauseId;
@@ -1735,6 +1862,7 @@ $('.temp-external-para-save-next').click(function(){
 	var type="";
 	var primerykey="";
 	exmainJson["email"]=Email;
+	exmainJson["group"]=group;
 	exmainJson["SFEmail"]=SFEmail;
 	exmainJson["saveType"]=savetype;
 	exmainJson["username"]=username;
@@ -1788,7 +1916,7 @@ function myFunction(){
 	try{
 		$.ajax({
 			type:'GET',
-			url:'/portal/servlet/service/GetParentClauseList?email='+Email,
+			url:'/portal/servlet/service/GetParentClauseList?email='+Email+'&group='+group,
 			async: false,
 			success:function(dataa){
 				//alert(dataa);
@@ -1900,6 +2028,7 @@ reader.onloadend = function() {
 	advancedobject["selecteddocumentworkflow"]=selecteddocumentworkflow;
 	composeTempJson["templatename"]=templatename;
 	composeTempJson["email"]=Email;
+	composeTempJson["group"]=group;
 	composeTempJson["username"]=username;
 	composeTempJson["NumStyle"]=NumStyle;
 	composeTempJson["selectedclause"]=selectedclause;
@@ -2054,6 +2183,7 @@ $('.mail-temp-external-save-next').click(function(){
 	var primerykey="";
 		
 	exmainJson["email"]=Email;
+	exmainJson["group"]=group;
 	exmainJson["saveType"]=savetype;
 	var externalparamobject=document.getElementById("exparamArr").value;
 	console.log(document.getElementById("exparamArr").value);
@@ -2154,6 +2284,7 @@ $('.mail-temp-compose-save-next-btn').click(function(){
 	var username="doctiger@xyz.com";
 	
 	composeMailJson["email"]=Email;
+	composeMailJson["group"]=group;
 	composeMailJson["savetype"]=savetype;
 	composeMailJson["username"]=username;
 	
@@ -2564,6 +2695,7 @@ function excelFileUpload(fileId, Moduletype, fileName){
 			var ClauseName=document.getElementById("cn").value;
 			
 			uploadExcel["Email"]=Email;
+			uploadExcel["group"]=group;
 			uploadExcel["SFEmail"]=SFEmail;
 			uploadExcel["savetype"]=savetype;
 			uploadExcel["ClauseId"]=ClauseId;
@@ -3143,56 +3275,10 @@ $('.mail-temp-external-pre-next').click(function(){
 	$('.select-sfdc-object-mail-temp-main').css('display','block');
 });
 $(document).ready(function(){
-	if($('.upload_file').is(':checked')){
-		$('.upload-file-main').css('display','block');
-	}
-	if($('.static-dynamic-doc').is(':checked')){
-		// call list of temlate to select in Dynamic Document
-		//Pallavi  ===============================================
-		 // getTempforDoc();
-		 //==================================================== 
-		$('.select-temp-dynamic-doc-main').css('display','block');
-	}
-	if($('.upload_file_parent_cls_lib').is(':checked')){
-		$('.upload-file-main-parnt-cls-lib').css('display','block');
-	}
+	
 });
 $(document).ready(function(){
 	
-	//pallavi================
-	//alert("in document.ready")
-	addeventcomm("selectevent-comm");
-	  addattachtemplatecomm("attach-temp-comm");
-	 addmailtemplatecomm("select-mail-tmp");
-	  addSMStemplatecomm("select-sms-tmp");
-
-
-		//alert("end set attachtemp")
-
-	  
-	//====================
-		
-		//pallavi workflowapprovers=====
-	document.getElementById("WorkflowApproverType").value="new"
-	addApproverDropDown("listofapprovers", "selectwkapprover");
-	//=================================
-		
-		//pallavi==============
-		dislayDocTable();
-		//=================
-	if($('.upload_file1').is(':checked')){
-		$('.upload-file-main1').css('display','block');
-	}
-	if($('.static-dynamic-doc').is(':checked')){
-		// call list of temlate to select in Dynamic Document
-		//Pallavi  ===============================================
-		  getTempforDoc();
-		 //==================================================== 
-		$('.select-temp-dynamic-doc-main').css('display','block');
-	}
-	if($('.upload_file_parent_cls_lib').is(':checked')){
-		$('.upload-file-main-parnt-cls-lib').css('display','block');
-	}
 });
 
 //pallavi========================================
@@ -3401,7 +3487,7 @@ $('#controllerCluseLib1').click(function(){
 		var arr=[];
 		$.ajax({
 			type:'GET',
-			url:'/portal/servlet/service/GetController?Email='+Email+'&SFEmail='+SFEmail,
+			url:'/portal/servlet/service/GetController?Email='+Email+'&SFEmail='+SFEmail+'&group='+group,
 			async:true,
 			success:function(dataa){
 				//alert(dataa);
@@ -3486,7 +3572,7 @@ function editClause(clauseName){
 	 * "type":"online","para":["جملة باللغة العربية هذا هو وصف العبارة لاختبا"]}]}*/
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/EditParentClses?email='+Email+'&clauseName='+clauseName,
+		url:'/portal/servlet/service/EditParentClses?email='+Email+'&clauseName='+clauseName+'&group='+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3542,7 +3628,7 @@ function editChClause(ParentClauseId, clauseName, chClsId, chClsName){
 * "type":"online","para":["The Licensor, owner or seller of the ."]},{"language":"Arabic","type":"online","para":["??????"]}]}*/
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/EditChildClses?email='+Email+'&ParentClauseId='+chClsId,
+		url:'/portal/servlet/service/EditChildClses?email='+Email+'&ParentClauseId='+chClsId+'&group'+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3591,7 +3677,7 @@ function editTemplate(tempName){
 	 * "selectedWorkflowForDoc":"workflow1"}}*/
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/EditTemplate?email='+Email+'&template='+tempName,
+		url:'/portal/servlet/service/EditTemplate?email='+Email+'&template='+tempName+'&group='+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3655,7 +3741,7 @@ function editMailTemp(tempName){
 	 * "Ruledata":"{\"URL\":\"http://35.236.213.87:8080/drools/callrules/doctiger@xyz.com_doctiger_project_rulesdoctiger/fire\",\"Input\":[],\"Output\":[]}"}}*/
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/EditMailTemplate?email='+Email+'&mailtemplate='+tempName,
+		url:'/portal/servlet/service/EditMailTemplate?email='+Email+'&mailtemplate='+tempName+'&group='+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3696,7 +3782,7 @@ function editSmsTemp(tempName){
 	 * "fieldlength":"255"},{"fieldname":"invoiceno","fieldtype":"string","fieldlength":"255"}]}],"Body":"ss","From":"abc@gmail”,"To":"dd"}*/
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/EditSMSTemplate?email='+Email+'&smstemplate='+tempName,
+		url:'/portal/servlet/service/EditSMSTemplate?email='+Email+'&smstemplate='+tempName+'&group='+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3755,7 +3841,7 @@ $("body").on("click",".delete-parent-cls",function(){
 		complete:function(){*/
 			$.ajax({
 				type:'GET',
-				url:'/portal/servlet/service/DelelteClause?email='+Email+'&parentclauseid='+clauseId,
+				url:'/portal/servlet/service/DelelteClause?email='+Email+'&parentclauseid='+clauseId+'&group='+group,
 				async: true,
 				success:function(dataa){
 					//alert(dataa);
@@ -3782,7 +3868,7 @@ $("body").on("click",".delete-temp",function(){
 	console.log(tempName);
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/DeleteTemplate?email='+Email+'&template='+tempName,
+		url:'/portal/servlet/service/DeleteTemplate?email='+Email+'&template='+tempName+'&group='+group,
 		async: true,
 		success:function(dataa){
 			//alert(dataa);
@@ -3804,7 +3890,7 @@ $("body").on("click",".delete-mailTemp",function(){
 	if(tempType=="mail"){
 		$.ajax({
 			type:'GET',
-			url:'/portal/servlet/service/DeleteMailTemplate?email='+Email+'&mailtemplate='+tempName,		
+			url:'/portal/servlet/service/DeleteMailTemplate?email='+Email+'&mailtemplate='+tempName+'&group='+group,		
 			async: true,
 			success:function(dataa){
 				//alert(dataa);
@@ -3816,7 +3902,7 @@ $("body").on("click",".delete-mailTemp",function(){
 	}else if(tempType=="sms"){
 		$.ajax({
 			type:'GET',
-			url:'/portal/servlet/service/DeleteSMSTemplate?email='+Email+'&smstemplate='+tempName,
+			url:'/portal/servlet/service/DeleteSMSTemplate?email='+Email+'&smstemplate='+tempName+'&group='+group,
 			async: true,
 			success:function(dataa){
 				//alert(dataa);
@@ -3971,7 +4057,7 @@ $("body").on("click", ".deleteDynamicDoc", function (e) {
 
  $.ajax({
 	   type: 'GET',
-	   url: '/portal/servlet/service/DeleteAdvancedTemplate?email='+Email+'&template='+tempname,
+	   url: '/portal/servlet/service/DeleteAdvancedTemplate?email='+Email+'&template='+tempname+'&group='+group,
 	   success: function (dataa) {
 	    //alert(dataa);
 	   }
@@ -3993,7 +4079,7 @@ function getTempforDoc(){
 	document.getElementById("tempforDynamic").innerHTML = "";
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetTemplates?email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetTemplates?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		success: function (dataa) {
 			try{
 				var json = JSON.parse(dataa);
@@ -4039,7 +4125,7 @@ function getrulesfordoc(divid,idforselec){
 	try{
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/GetRulenWorkflow.rules?Email='+Email+'&SFEmail='+SFEmail,
+		url:'/portal/servlet/service/GetRulenWorkflow.rules?Email='+Email+'&SFEmail='+SFEmail+'&group='+group,
 		success:function(dataa){
 			console.log(dataa);
 			var json=JSON.parse(dataa);
@@ -4098,7 +4184,7 @@ function getworkflow(divid,idforselec){
 	console.log(divid);
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/GetRulenWorkflow.workflows?Email='+Email+'&SFEmail='+SFEmail,
+		url:'/portal/servlet/service/GetRulenWorkflow.workflows?Email='+Email+'&SFEmail='+SFEmail+'&group='+group,
 		success:function(dataa){
 			var json=JSON.parse(dataa);
 			var WorkFlows=json.WorkFlows;
@@ -4140,7 +4226,7 @@ function getworkflowfordoc(divid,idforselec){
 	document.getElementById(divid).innerHTML="";
 	$.ajax({
 		type:'GET',
-		url:'/portal/servlet/service/GetRulenWorkflow.documentworkflow?Email='+Email+'&SFEmail='+SFEmail,
+		url:'/portal/servlet/service/GetRulenWorkflow.documentworkflow?Email='+Email+'&SFEmail='+SFEmail+'&group='+group,
 		success:function(dataa){
 			//alert(dataa);
 			var json=JSON.parse(dataa);
@@ -4184,7 +4270,7 @@ Output: {"status":"success","Controller Name":["Controller1","Controlle2","Contr
 	document.getElementById(divid).innerHTML = "";
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetController?Email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetController?Email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		success: function (dataa) {
 			dataa = dataa.replace("Controller Name", "Controller_Name");
 			console.log("data after replace "+dataa);
@@ -4225,6 +4311,7 @@ $('#DynamicDocsave').click(function () {
 	var jsonData = {};
 		 
 	jsonData["email"]= Email;
+	jsonData["group"]= group;
 	jsonData["username"]= Email;
 	var type= copy.find('#DynamicTempType').val();
 	jsonData["type"]= copy.find('#DynamicTempType').val();
@@ -4307,7 +4394,7 @@ function dislayDocTable(){
 	console.log("in display doctable");
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetAdvancedTemplates?email='+Email,
+		url: '/portal/servlet/service/GetAdvancedTemplates?email='+Email+'&group='+group,
 		success: function (dataa) {
 			try{
 				var tempData= dataa.replace("Created_Date", "Creation_Date");
@@ -4361,7 +4448,7 @@ function dislayDocTable(){
 function editDynamicDoc(tempname, copy){
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/EditAdvancedTemplate?email='+Email+'&template='+tempname,
+		url: '/portal/servlet/service/EditAdvancedTemplate?email='+Email+'&template='+tempname+'&group='+group,
 		success: function (dataa) {
 			var json = JSON.parse(dataa);
 			console.log( "json.hasOwnProperty('status')  "+json.hasOwnProperty('status'));
@@ -4419,7 +4506,7 @@ function addApproverDropDown( divid,  idforselec){
 	var AllDiv = document.getElementsByClassName(divid);
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetApproversList?Email='+Email,
+		url: '/portal/servlet/service/GetApproversList?Email='+Email+'&group='+group,
 		success: function (dataa) {
 			var json = JSON.parse(dataa);
 			var Approvers = json.Approvers;
@@ -4460,6 +4547,7 @@ $('#workflowapproverssave').click(function () {
 	var Approvers=[];
 
 	jsonData["Email"]= Email;
+	jsonData["group"]= group;
 	jsonData["SFEmail"]= Email;
 	jsonData["saveType"]= copy.find('#WorkflowApproverType').val();
 
@@ -4497,6 +4585,7 @@ function setprimaryOfEvent(eventname, eventid, inputfieldid, sffieldid ){
 
 	var jsonData={};
 	jsonData["email"]=Email;
+	jsonData["group"]=group;
 	jsonData["eventname"]=eventname;
 	jsonData["eventid"]=eventid;
 
@@ -4518,7 +4607,7 @@ function setprimaryOfEvent(eventname, eventid, inputfieldid, sffieldid ){
 function showeventlist(divid, idforselec){
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetEventList?email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetEventList?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		success: function (dataa) {
 			var json = JSON.parse(dataa);
 			var EventList = json.EventList;
@@ -4558,6 +4647,7 @@ $('#req-res-int-event1-save').click(function () {
 	var Approvers=[];
 
 	jsonData["Email"]= Email;
+	jsonData["group"]= group;
 	jsonData["SFEmail"]= Email;
 		 
 	var eventname = copy.find('#req-res-int-sub-event-id1').val();  
@@ -4610,6 +4700,7 @@ $('#req-res-DocGen-event2-save').click(function () {
 	var primaryKey_value =copy.find('#event2-pkvalue').val();	    
 	
 	jsonDatapk["email"]= Email;
+	jsonDatapk["group"]= group;
 	jsonDatapk["SFEmail"]= Email;
 	jsonDatapk["eventname"]= eventname;
 	jsonDatapk["eventid"]= eventid;
@@ -4617,6 +4708,7 @@ $('#req-res-DocGen-event2-save').click(function () {
 	jsonDatapk["Primary_key_value"]= primaryKey_value;   
 	
 	jsonDataDD["Email"]= Email;
+	jsonDataDD["group"]= group;
 	jsonDataDD["EventId"]= eventid;
 	jsonDataDD["EventName"]= eventname;
 	jsonDataDD["Primery_key"]= primaryKey;
@@ -4661,7 +4753,7 @@ $('#req-res-DocGen-event2-save').click(function () {
 function addattachtemplatecomm(selectclass){
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetDTATemplateList?email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetDTATemplateList?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		async: true,
 		success: function (dataa) {
 			
@@ -4699,7 +4791,7 @@ function addattachtemplatecomm(selectclass){
 function addmailtemplatecomm(selectclass){
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetDTAMailTempList?email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetDTAMailTempList?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		async: true,
 		success: function (dataa) {
 			console.log(dataa);
@@ -4731,7 +4823,7 @@ function addmailtemplatecomm(selectclass){
 function addSMStemplatecomm(selectclass){
 	$.ajax({
 		type: 'GET',
-		url: '/portal/servlet/service/GetDTASMSTempListD?email=' + Email + '&SFEmail=' + SFEmail,
+		url: '/portal/servlet/service/GetDTASMSTempListD?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 		async: true,
 		success: function (dataa) {
 			try{
@@ -4869,6 +4961,7 @@ $('.savenewevent-comm').click(function () {
 	var SendToCMS="true";
 
 	mainjson["Email"]=Email;
+	mainjson["group"]=group;
 	mainjson["savetype"]=savetype;
 	mainjson["eventname"]=eventname;
 	mainjson["SendToCMS"]=SendToCMS;
@@ -4994,7 +5087,7 @@ function addeventcomm(selectclass){
 	// if there is no event it is giving error messahe handle tha and show only create new event option
 	$.ajax({ 
 	type: 'GET',
-	url: '/portal/servlet/service/GetEventList?email=' + Email + '&SFEmail=' + SFEmail,
+	url: '/portal/servlet/service/GetEventList?email=' + Email + '&SFEmail=' + SFEmail+'&group='+group,
 	async:false,
 	success: function (dataa) {
 	//alert(dataa);
@@ -5024,16 +5117,23 @@ function addeventcomm(selectclass){
 	}
 
 //=================================================
-var qr_tempName1;																			
+var qr_tempName1;		
+var qr_group;
 $('.btn-QRcode').click(function(){
 	console.log("In function");
-	var popup= window.open("http://35.200.169.114:8082/portal/servlet/service/QRCodenLogo");
+	var popup= window.open("http://prod.bizlem.io:8082/portal/servlet/service/QRCodenLogo");
 	popup.onload = function() {
         console.log("test");
     	qr_tempName1= document.getElementById("tempName").value;
+        qr_group=document.getElementById("working-group-Dropdown-id").value;
+
     	console.log(qr_tempName1);
+    	console.log(qr_group);
+
     	localStorage.setItem("tempName",qr_tempName1);
-    	console.log(localStorage.getItem("tempName"));
+    	localStorage.setItem("qr_group", qr_group);
+    	console.log("qr_tempName1 "+localStorage.getItem("tempName")+" qr_group "+qr_group);
+    	//alert("qr_tempName1 "+qr_tempName1);
     } 
 });
 

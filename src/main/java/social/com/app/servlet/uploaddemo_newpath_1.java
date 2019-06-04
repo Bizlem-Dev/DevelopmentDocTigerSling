@@ -59,6 +59,8 @@ public class uploaddemo_newpath_1 extends SlingAllMethodsServlet {
 		JSONObject js = new JSONObject();
 		String moduletype = "";
 		String email = "";
+		String group = "";
+
 		//Node userNode = null;
 		//Node emailNode = null;
 		Node dtaNode = null;
@@ -78,11 +80,12 @@ public class uploaddemo_newpath_1 extends SlingAllMethodsServlet {
 			JSONObject resultjsonobject = new JSONObject(res);
 
 			email = resultjsonobject.getString("Email");
-			
+			group = resultjsonobject.getString("group");
+
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, response );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email,group, session, response );
 			if(dtaNode!=null) {
 
 			

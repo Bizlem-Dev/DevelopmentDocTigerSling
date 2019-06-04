@@ -1,6 +1,6 @@
 package com.service;
 
-public class Test {
+   class Test_test {
 
 	public static void main(String[] args) {
 		/*double[] myList= {1, 5, 5, 5, 5, 1};

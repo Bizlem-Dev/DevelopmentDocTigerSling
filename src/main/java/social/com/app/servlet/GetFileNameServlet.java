@@ -47,6 +47,7 @@ public class GetFileNameServlet  extends SlingAllMethodsServlet {
 	PrintWriter out = response.getWriter();
 			
 	String email=request.getParameter("email").replace("@", "_");
+	String group=request.getParameter("group");
 	JSONObject retEvntobj= new JSONObject();
 		
 	try {
@@ -75,7 +76,7 @@ public class GetFileNameServlet  extends SlingAllMethodsServlet {
 		}
 		
 		email = request.getParameter("email").replace("@", "_");
-		
+
 		if(serviceNode.hasNode("freetrial")) {
 			freetrialNode= serviceNode.getNode("freetrial");
 		}

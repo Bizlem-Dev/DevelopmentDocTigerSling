@@ -114,6 +114,7 @@ public class getUserChatPasswordServ extends SlingAllMethodsServlet {
 			try {
 				String email= "viki@gmail.com";
 				String usrid = email;
+				String group= "G1";
 
 				email = email.replace("@", "_");
 				out = response.getWriter();
@@ -130,7 +131,7 @@ public class getUserChatPasswordServ extends SlingAllMethodsServlet {
 				FreeTrialandCart cart = new FreeTrialandCart();
 				String freetrialstatus = cart.checkfreetrial(usrid);
 				 out.println("freetrialstatus: "+freetrialstatus);
-				dtaNode = parseSlingData.getDocTigerAdvNode(freetrialstatus, usrid, session, response);
+				dtaNode = parseSlingData.getDocTigerAdvNode(freetrialstatus, usrid, group,session, response);
 				 out.println("dtaNode: "+dtaNode);
 				if (dtaNode != null) {
 					if (dtaNode.hasNode("Communication")) {

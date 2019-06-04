@@ -65,12 +65,13 @@ public class GetMailTempListServ_evt_old extends SlingAllMethodsServlet {
 				Node templatenode = null;
 				
 				String usrid = request.getParameter("email");
+				String group = request.getParameter("group");
 
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(usrid);
 
 				String js = "";
-				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, response );
+				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, group,session, response );
 				out.println("dtaNode: "+dtaNode);
 				if(dtaNode!=null) {
 

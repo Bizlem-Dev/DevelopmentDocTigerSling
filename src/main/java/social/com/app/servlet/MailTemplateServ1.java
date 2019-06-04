@@ -103,7 +103,8 @@ public class MailTemplateServ1 extends SlingAllMethodsServlet {
 			JSONObject obj = new JSONObject(res);
 		//	out.print(obj);
 			
-			
+			String group  = obj.getString("group");
+
 
 			if (obj.getString("email").length() == 0) {
 				emailerror.put("status", "error");
@@ -126,7 +127,7 @@ public class MailTemplateServ1 extends SlingAllMethodsServlet {
 					FreeTrialandCart cart= new FreeTrialandCart();
 					String freetrialstatus=cart.checkfreetrial(email);
 					
-					dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email, session, response );
+					dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email,group, session, response );
 					if(dtaNode!=null) {
 
 			

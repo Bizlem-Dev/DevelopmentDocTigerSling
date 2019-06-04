@@ -84,11 +84,12 @@ public class QRCodeGenerationServlet extends SlingAllMethodsServlet {
 			//String email= obj.getString("Email").replace("@", "_");
 			
 			String usrid = obj.getString("Email");
+			String group = obj.getString("group");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(usrid);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, response );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, group,session, response );
 			if(dtaNode!=null) {
 
 			

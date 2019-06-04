@@ -62,10 +62,12 @@ public class GetTemplateListServ_evt extends SlingAllMethodsServlet {
 			JSONArray array = new JSONArray();
 
 			String email1=request.getParameter("email");
+			String group=request.getParameter("group");
+
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email1);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, response );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, group,session, response );
 			if(dtaNode!=null) {
 
 			

@@ -1,5 +1,7 @@
 package com.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,10 +19,11 @@ public class ReadHeader_Excel {
 	public static void main(String[] args) {
 		ReadHeader_Excel a = new ReadHeader_Excel();
 		try {
-			String i = a.callget("http://35.186.166.22:8082/portal/content/MasterExcelNode/master1.xls/master1.xls");
+			//String i = a.callget("http://35.186.166.22:8082/portal/content/MasterExcelNode/master1.xls/master1.xls");
 			
-			a.getJsondatabypk( "doctiger@xyz.com",  "http://35.236.154.164:8082/portal/content/user/doctiger_xyz.com/DocTigerAdvanced/Excel/0/test_2.xls/test_2.xls");
-
+			a.getJsondatabypk( "doctiger@xyz.com",  "http://prod.bizlem.io:8082/portal/content/services/freetrial/users/viki_gmail.com/DocTigerAdvanced/Excel/23/Doctiger invoicenew.xls/Doctiger invoicenew.xls");
+InputStream ins =new FileInputStream(new File("C:\\Users\\user\\Downloads\\sampletest (1).xls"));
+		//	a.getjsonReadExcel(ins);
 			} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,13 +128,11 @@ public class ReadHeader_Excel {
 			conn.setRequestProperty("Accept", "application/text");
 			System.out.println("1");
 			ins = conn.getInputStream();
+			System.out.println("1");
 			res = getjsonReadExcel(ins);
 		}catch(Exception e) {
 			e.getMessage();
 		}
-		
-		
-		
 		return res;
 		
 	}
@@ -192,6 +193,7 @@ JSONObject subobj = new JSONObject();
 
 			ins.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			js=e.getMessage();
 		}
 		return header;

@@ -84,6 +84,7 @@ public class DynamicDependency_core_comment extends SlingAllMethodsServlet {
 			out.println("res: " + res);
 			JSONObject resultobj = new JSONObject(res);
 			String email = resultobj.getString("Email");
+			String group = resultobj.getString("group");
 			String EventId = resultobj.getString("EventId");
 			String EventName = resultobj.getString("EventName");
 			String SFObject = resultobj.getString("SFObject");

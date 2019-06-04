@@ -72,6 +72,7 @@ public class SaveEventServ extends SlingAllMethodsServlet {
 		String commTypeCSV= "";
 		//String commType="";
 		String email="";
+		String group="";
 		String[] cType;
 		
 		int i;
@@ -99,11 +100,12 @@ public class SaveEventServ extends SlingAllMethodsServlet {
 			
 			email= obj.getString("Email").replace("@", "_");
 			String usrid = obj.getString("Email");
+			 group = obj.getString("group");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(usrid);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, rep );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, group,session, rep );
 			if(dtaNode!=null) {
 
 			

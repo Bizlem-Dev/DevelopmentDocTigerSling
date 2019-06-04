@@ -80,6 +80,7 @@ public class ApproverRejectServlet extends SlingAllMethodsServlet {
 			JSONObject obj = new JSONObject(res);
 			String data = "";
 			String email = "";
+			String group="";
 			String type = "";
 			//String creator = "";
 			//String approverSFemailId= "";
@@ -95,6 +96,7 @@ public class ApproverRejectServlet extends SlingAllMethodsServlet {
 			Node tempNode = null;
 
 			email = obj.getString("email").replace("@", "_");
+			group=obj.getString("group");
 			data = obj.getString("TemplateName");
 			type= obj.getString("Type");
 			//creator= obj.getString("creator").replace("@", "_");
@@ -114,7 +116,7 @@ public class ApproverRejectServlet extends SlingAllMethodsServlet {
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(usrid);
 
-			DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, rep );
+			DocTigerAdvance =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid,group, session, rep );
 			if(DocTigerAdvance!=null) {
 				if(type.equalsIgnoreCase("Clauses")) {
 					//out.println("type  "+type);

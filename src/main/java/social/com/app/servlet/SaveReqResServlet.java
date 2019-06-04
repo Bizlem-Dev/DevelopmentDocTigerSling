@@ -74,10 +74,12 @@ public class SaveReqResServlet  extends SlingAllMethodsServlet {
 			
 			
 			String email1=obj.getString("Email");
+			String group=obj.getString("group");
+
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email1);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, rep);
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, group,session, rep);
 			if(dtaNode!=null) {
 
 			if(dtaNode.hasNode("Communication")){ 

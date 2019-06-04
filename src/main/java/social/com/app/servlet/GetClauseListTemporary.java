@@ -60,11 +60,13 @@ public class GetClauseListTemporary extends SlingAllMethodsServlet {
 					
 					//Node userid=null;
 					String usrid=request.getParameter("email");
+					String group=request.getParameter("group");
+
 					//out.println("userid: "+usrid);
 					FreeTrialandCart cart= new FreeTrialandCart();
 					String freetrialstatus=cart.checkfreetrial(usrid);
 					//out.println("freetrialstatus: "+freetrialstatus);
-					doctiger =	parseSlingData.getDocTigerAdvNode(freetrialstatus, usrid, session, response);
+					doctiger =	parseSlingData.getDocTigerAdvNode(freetrialstatus, usrid, group,session, response);
 					//out.println("doctiger: "+doctiger);
 					if(doctiger!=null) {
 						//out.println("in funcion");

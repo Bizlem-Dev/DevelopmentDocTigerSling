@@ -50,6 +50,7 @@ public class ApproveTask extends SlingAllMethodsServlet {
 		PrintWriter out= rep.getWriter();
 		Session session=null;
 		String creator="";
+		String group="";
 		String Type="";
 		String TemplateName="";
 		String approverSFemailId="";
@@ -74,6 +75,7 @@ public class ApproveTask extends SlingAllMethodsServlet {
 			TemplateName=inputobj.getString("TemplateName");
 			Type= inputobj.getString("Type");
 			creator= inputobj.getString("creator");
+			group=inputobj.getString("group");
 			//task_id=inputobj.getString("task-id");
 			approverSFemailId= inputobj.getString("approverSFemailId");
 			approvSFusername= inputobj.getString("approvSFusername"); 
@@ -86,7 +88,7 @@ public class ApproveTask extends SlingAllMethodsServlet {
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(creator);
 
-			DoctigerAdvanced =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  creator, session, rep );
+			DoctigerAdvanced =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  creator,group, session, rep );
 			if(DoctigerAdvanced!=null) {
 				if(Type.equals("Template")) {
 					out.println("in template");

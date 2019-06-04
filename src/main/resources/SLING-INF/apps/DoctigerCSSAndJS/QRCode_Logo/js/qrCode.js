@@ -4,7 +4,7 @@ if(document.getElementById("email").value=="anonymous"){
 }else{
 	var Email= document.getElementById("email").value;
 }
-var SFEmail="doctiger@xyz.com";
+var SFEmail=document.getElementById("email").value;
 
 var qrJson={};
 $("body").on("click",".save-QR",function(){
@@ -16,8 +16,11 @@ $("body").on("click",".save-QR",function(){
 	var position=document.getElementById("selPosition").value;
 	var tableNo=document.getElementById("table_No").value;
 //	/var savetype= document.getElementById("tempSaveType").value;
+	
 	qrJson["Email"]=Email;
-	qrJson["templatename"]=templatename;
+	qrJson["group"]=localStorage.getItem("qr_group");;
+
+	qrJson["templatename"]=localStorage.getItem("tempName");
 	qrJson["size"]=size;
 	qrJson["position"]=position;
 	qrJson["tableNo"]= tableNo;
@@ -63,13 +66,17 @@ $(document).ready(function() {
 		$(".box-left-temp-lib").append('<div class="list-part"><ul><li>'+x[i]+'</li></ul></div>');
 		}*/
 	var qr_tempName1=localStorage.getItem("tempName");
+	var qr_group=localStorage.getItem("qr_group");
+
 	document.getElementById("qr_tempName").value= qr_tempName1;
-	console.log(qr_tempName1);
+	console.log("qr_tempName1 "+qr_tempName1 +"qr_group "+qr_group)
 	
 	var json;
 	var headers;
 	console.log("test");
 	excelJson["email"]=Email;
+	excelJson["group"]=qr_group;
+
 	//alert(JSON.stringify(tempmainJson));
 	console.log(excelJson);
 	$.ajax({

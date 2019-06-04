@@ -79,6 +79,10 @@ protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse 
 	String username = null;
 	String serviceid = null;
 	String productcode = null;
+	String start_date=null;
+	String end_date=null;
+	String owner_email=null;
+	String quantity=null;
 	JSONArray fullloaddata = null;
 
 	BufferedReader bufferedReaderCampaign = null;
@@ -116,9 +120,23 @@ protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse 
 		username = fulljsonobject.getString("userId").replace("@", "_");
 		serviceid = fulljsonobject.getString("serviceId");
 		productcode = fulljsonobject.getString("productCode");
+		 start_date=fulljsonobject.getString("start_date");
+		 end_date=fulljsonobject.getString("end_dates");
+		 owner_email=fulljsonobject.getString("owner_email");
+		 quantity=fulljsonobject.getString("quantity");
+
+		
+		
+		
 		fullloaddata = fulljsonobject.getJSONArray("fullloaddata");
 		out.println("username " + username);
 		out.println("serviceid " + serviceid);
+		out.println("start_date " + start_date);
+		out.println("end_date " + end_date);
+		out.println("owner_email " + owner_email);
+		out.println("quantity " + quantity);
+
+
 		out.println("fullloaddata " + fullloaddata);
 
 		if (!USERNode.hasNode(username)) {
@@ -155,15 +173,25 @@ protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse 
 		if (!servicenode2.hasNode(serviceid)) {
 		serviceidnode2 = servicenode2.addNode(serviceid);
 		serviceidnode2.setProperty("producttype", productcode);
+		serviceidnode2.setProperty("start_date", start_date);
+		serviceidnode2.setProperty("end_dates", end_date);
+		serviceidnode2.setProperty("owner_email", owner_email);
+		serviceidnode2.setProperty("quantity", quantity);
+
 		} else {
 		serviceidnode2 = servicenode2.getNode(serviceid);
 		serviceidnode2.setProperty("producttype", productcode);
+		serviceidnode2.setProperty("start_date", start_date);
+		serviceidnode2.setProperty("end_dates", end_date);
+		serviceidnode2.setProperty("owner_email", owner_email);
+		serviceidnode2.setProperty("quantity", quantity);
+
 		}
 		out.println("serviceidnode2 " + serviceidnode2);
 
 		// admin node configuration
 		// end----------------------------------------------------------------------------------
-		// add for loop to save fullload users data
+		// add for loop to save fullload users datas
 		for (int i = 0; i < fullloaddata.length(); i++) {
 		JSONObject subobj = fullloaddata.getJSONObject(i);
 		out.println("subobj "+subobj);

@@ -133,11 +133,11 @@ public class SaveParentClause extends SlingAllMethodsServlet {
 	  
 	  String email = obj.getString("Email").replace("@", "_");
 	  String email1 = obj.getString("Email").trim();
-
+String group=obj.getString("group");
 	  FreeTrialandCart cart= new FreeTrialandCart();
 	  String freetrialstatus=cart.checkfreetrial(email1);
 	  //out.println("freetrialstatus: "+freetrialstatus);
-	  dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, response );
+	  dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1,group, session, response );
 	  if(dtaNode!=null) {
 		  ClauseName = obj.getString("ClauseName");
 		  clauseNode = getClauseByName(ClauseName, email, dtaNode);

@@ -96,6 +96,7 @@ Session session =null;
 		Node oldVerCntNode= null;
 						
 		String email="";
+		String group="";
 		String ParentClauseId="";
 		String Metadata="";
 		String Description="";
@@ -133,12 +134,13 @@ Session session =null;
 			JSONObject obj = new JSONObject(res);
 		  
 			email= obj.getString("Email").replace("@", "_");
-			
+			group= obj.getString("group");
+
 			String email1 = obj.getString("Email").trim();
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email1);
 			
-		 dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, response );
+		 dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, group,session, response );
 			if(dtaNode!=null) {
 			
 			

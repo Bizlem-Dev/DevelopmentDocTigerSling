@@ -67,11 +67,12 @@ public class EditWFApproverServ  extends SlingAllMethodsServlet {
 			//email= req.getParameter("Email").replace("@", "_");
 			
 			String email1= req.getParameter("Email");
+			String group= req.getParameter("group");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(email1);
 			
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, rep );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1,group, session, rep );
 			if(dtaNode!=null) {
 
 			

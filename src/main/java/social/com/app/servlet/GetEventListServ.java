@@ -60,11 +60,12 @@ public class GetEventListServ  extends SlingAllMethodsServlet {
 			JSONObject json =null;
 
 			String usrid = request.getParameter("email");
+			String group = request.getParameter("group");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(usrid);
 				
-			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, response );
+			dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid,group, session, response );
 			//out.println("usrid: "+usrid+" freetrialstatus: "+freetrialstatus+" dtaNode: "+dtaNode);
 			if(dtaNode!=null) {
 				if(dtaNode.hasNode("Communication")){

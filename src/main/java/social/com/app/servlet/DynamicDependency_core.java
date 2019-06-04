@@ -80,6 +80,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 			// out.println("res: " + res);
 			JSONObject resultobj = new JSONObject(res);
 			String email = resultobj.getString("Email");
+			String group = resultobj.getString("group");
 			String EventId = resultobj.getString("EventId");
 			String EventName = resultobj.getString("EventName");
 			String SFObject = resultobj.getString("SFObject");
@@ -104,20 +105,20 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 
 			// call method to check validity of document generation
 			// ===============================================================
-			/*
-			 * FreeTrialandCart cart= new FreeTrialandCart(); String
-			 * freetrialstatus=cart.checkfreetrial(email);
-			 * out.println("freetrialstatus: "+freetrialstatus);
-			 */
-			// Node update_node =parseSlingData.validationmethod( freetrialstatus, email,
-			// session , req, rep) ;
+			
+			  FreeTrialandCart cart= new FreeTrialandCart(); String
+			  freetrialstatus=cart.checkfreetrial(email);
+			  out.println("freetrialstatus: "+freetrialstatus);
+			 
+			Node doctigerAdvNode =parseSlingData.validationmethod( freetrialstatus, email,group,
+			session , req, rep) ;
 
-			// if(update_node!=null) {
+			 if(doctigerAdvNode!=null) {
 
 			// ==============================================================================================================================
 
 			// out.println("before eventdata");
-			String result = parseSlingData.getEventdata(email, EventId, EventName, rep);
+			String result = parseSlingData.getEventdata(email, group,EventId, EventName, rep);
 			// out.println("event result " + result);
 			JSONArray arr = new JSONArray(result);
 			JSONObject CTrecord = null;
@@ -132,7 +133,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					// call method to get template info
 					String AttachtempalteType = CTrecord.getString("AttachedTempType");
 
-					docurl = parseSlingData.getADVandTemplatedata(email, Templatename, AttachtempalteType, SFObject,
+					docurl = parseSlingData.getADVandTemplatedata(email, group,Templatename, AttachtempalteType, SFObject,
 							Primery_key, Primery_key_value, SFData, rep);
 					// String docurl="";
 					out.println(docurl);
@@ -140,13 +141,14 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					if (docurl != null && docurl != "") {
 						int o = docurl.lastIndexOf("/");
 						String generatedfile = docurl.substring(o + 1, docurl.length());
-//					        out.println("comma separated ooooo: " +generatedfile);
+				        out.println("comma separated ooooo: " +generatedfile);
 
 
 						try {
-
+                        if(! generatedfile.equalsIgnoreCase("null") &&   generatedfile!=null  ) {
 							attjs.put(generatedfile);
-
+							//out.println("attjs 1 "+attjs);
+                             }
 						} catch (Exception e) {
 							// TODO: handle exception
 						}
@@ -159,7 +161,7 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					// call method to get template info
 //					 out.println("MailTemplate " + MailTemplate);
 
-					JSONObject maildata = parseSlingData.getMailTemplatedata(email, MailTemplate, SFObject, Primery_key,
+					JSONObject maildata = parseSlingData.getMailTemplatedata(email,group, MailTemplate, SFObject, Primery_key,
 							Primery_key_value, SFData, rep); // ,session
 //					out.println("SFData= " + SFData);
 					JSONArray resar = SFData.getJSONArray("response");
@@ -281,6 +283,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 						     for(int i=0;i<array.length;i++) {
 						     	
 						    	 attjs.put(array[i]);
+									out.println("attjs 2 "+attjs);
+
 						     }
 //							attjs=separateComma(attachfilenames);
 //							out.println("attjs= " + attjs);
@@ -337,6 +341,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					sendobj.put("bcc",bccjs);
 					
 					sendobj.put("attachmentPath",attachmentPath);
+					out.println("attjs 3 "+attjs);
+
 					sendobj.put("attachments",attjs);
 					
 //					out.println("newbody old= "+maildata.get("body").toString());
@@ -419,11 +425,11 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 
 				// code to set counter on document
 				// generation===================================================================
-				// String docgencounter = parseSlingData.updateDocGenCounter(email, update_node,
-				// rep);
+				String docgencounter = parseSlingData.updateDocGenCounter( email,  freetrialstatus,doctigerAdvNode,  rep);
+
 				// ====================================================================================================================
 			}
-			// }
+			 }
 		} catch (Exception e) {
 			out.println(e.getMessage());
 		}

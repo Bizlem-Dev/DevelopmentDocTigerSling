@@ -70,6 +70,7 @@ public class GetPrimaryKeyServlet  extends SlingAllMethodsServlet {
 			  
 				String email= obj.getString("email").replace("@", "_");
 				String email1= obj.getString("email");
+				String group= obj.getString("group");
 
 				
 				Node dtaNode= null;
@@ -86,7 +87,7 @@ public class GetPrimaryKeyServlet  extends SlingAllMethodsServlet {
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(email1);
 				
-				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, session, response );
+				dtaNode =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  email1, group,session, response );
 				if(dtaNode!=null) {
 
 				if(dtaNode.hasNode("Communication")){

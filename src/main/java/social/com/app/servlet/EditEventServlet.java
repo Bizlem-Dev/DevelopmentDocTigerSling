@@ -49,6 +49,8 @@ public class EditEventServlet  extends SlingAllMethodsServlet {
 		PrintWriter out = response.getWriter();
 
 		String email=request.getParameter("email").replace("@", "_");
+		String group=request.getParameter("group");
+
 		JSONObject retEvntobj= new JSONObject();
 
 		try {

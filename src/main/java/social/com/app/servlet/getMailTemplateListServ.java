@@ -66,11 +66,12 @@ public class getMailTemplateListServ extends SlingAllMethodsServlet {
 			JSONArray array = new JSONArray();
 
 			String usrid = request.getParameter("email");
+			String group = request.getParameter("group");
 
 			FreeTrialandCart cart= new FreeTrialandCart();
 			String freetrialstatus=cart.checkfreetrial(usrid);
 			
-			doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, response );
+			doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, group,session, response );
 			if(doctiger!=null) {
 				
 			

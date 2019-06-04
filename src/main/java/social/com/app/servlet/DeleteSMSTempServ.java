@@ -59,12 +59,14 @@ public class DeleteSMSTempServ extends SlingAllMethodsServlet {
 
 			try {
 				String usrid = request.getParameter("email");
+				String group = request.getParameter("groups");
+
 				String template = request.getParameter("smstemplate");
 
 				FreeTrialandCart cart= new FreeTrialandCart();
 				String freetrialstatus=cart.checkfreetrial(usrid);
 
-				doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, session, response );
+				doctiger =	parseSlingData.getDocTigerAdvNode( freetrialstatus,  usrid, group,session, response );
 				if(doctiger!=null) {
 
 					Node templatenode = null;
