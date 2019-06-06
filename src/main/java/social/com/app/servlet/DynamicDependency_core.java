@@ -362,9 +362,8 @@ public class DynamicDependency_core extends SlingAllMethodsServlet {
 					
 				
 			
-	
-					String sendMailUrl = "http://" + bundleststic.getString("DocGenServerIP")
-							+ ":8080/NewMail/getFileAttachServlet";
+	// SendMailServletUrl=http://prod.bizlem.io:8085/NewMailDev/getFileAttachServlet
+					String sendMailUrl =  bundleststic.getString("SendMailServletUrl");
 
 //				    					status = 
 					int st = new SOAPCall().callPostJSonModified(sendMailUrl, sendobj);

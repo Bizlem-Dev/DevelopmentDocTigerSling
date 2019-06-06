@@ -821,6 +821,8 @@ public Node getDocTigerAdvNode(String freetrialstatus, String email, String grou
 		Node QRcodeNode = null;
 		String temptoparse = "";
 		String newemail = email.replace("@", "_");
+		String tempurl="";
+		Node tempnode=null;
 		
 		try {
 
@@ -834,7 +836,14 @@ public Node getDocTigerAdvNode(String freetrialstatus, String email, String grou
 
 			Doctigernode = getDocTigerAdvNode(freetrialstatus, email, group,session, response);
 			if (Doctigernode != null) {
-
+				
+					if (Doctigernode.hasNode("TemplateLibrary") && Doctigernode.getNode("TemplateLibrary").hasNode(templatename)) {
+						tempnode = Doctigernode.getNode("TemplateLibrary").getNode(templatename);
+						if(tempnode.hasProperty("TemplateUrl")) {
+						tempurl=tempnode.getProperty("TemplateUrl").getString();
+						}
+						
+					}
 				if (AttachtempalteType.equals("TemplateLibrary")) {
 					temptoparse = templatename;
 					sfobj = getTempSFObj(email, group,templatename, response);
@@ -1108,8 +1117,8 @@ public Node getDocTigerAdvNode(String freetrialstatus, String email, String grou
 					floorplanarr.put(reqrecord.get("p_plan__c"));
 				}
 				newjson.put("floorplanarr", floorplanarr.toString());
-
-//				out.println("newjson2 " +newjson);
+				newjson.put("TemplateUrl",tempurl );
+				out.println("newjson2 " +newjson);
 
 				templatename_url = new SOAPCall().callPostJSonModified(
 						bundleststic.getString("DocGenServletUrl"), newjson);
